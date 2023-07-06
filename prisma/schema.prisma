@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// temporary 
+model Product {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String
+  createdAt   DateTime   @default(now())
+  colors      Color[]
+  pictures    Picture[]
+  height      Height[]
+  new         Boolean    @default(false)
+  selected    Boolean    @default(false)
+  visible     Boolean    @default(true)
+  Promotion   Promotion? @relation(fields: [promotionId], references: [id])
+  promotionId Int?
+}
+
+model Picture {
+  id        Int      @id @default(autoincrement())
+  binary    String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  General   General? @relation(fields: [generalId], references: [id])
+  generalId Int?
+}
+
+model Color {
+  id        Int      @id @default(autoincrement())
+  hex       String
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+}
+
+model Height {
+  id        Int      @id @default(autoincrement())
+  height    Int
+  product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  price     Int
+}
+
+model Promotion {
+  id        Int       @id @default(autoincrement())
+  name      String
+  discount  Int
+  launchDay DateTime  @default(now())
+  endDay    DateTime?
+  products  Product[]
+}
+
+model General {
+  id             Int       @id @default(autoincrement())
+  promoteMessage String?
+  about          String?
+  carrousel      Picture[]
+}
+
+model Menu {
+  id                   Int    @id @default(autoincrement())
+  name                 String
+  childrenMenu         Menu[] @relation("childrenMenu")
+  childrenMenuRelation Menu[] @relation("childrenMenu")
+}
