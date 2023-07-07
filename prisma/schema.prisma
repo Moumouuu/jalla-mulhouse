@@ -72,3 +72,9 @@ model Menu {
   childrenMenu         Menu[] @relation("childrenMenu")
   childrenMenuRelation Menu[] @relation("childrenMenu")
 }
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
