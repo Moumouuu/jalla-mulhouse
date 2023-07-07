@@ -6,12 +6,7 @@ import Image from "next/image";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    resetField,
-  } = useForm();
+  const { register, handleSubmit, resetField } = useForm();
 
   const onSubmit: SubmitHandler<any> = (data) => {
     signIn("credentials", {

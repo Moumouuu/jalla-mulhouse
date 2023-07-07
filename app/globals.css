@@ -6,7 +6,8 @@
 bg dark blue #00001B
 */
 
-.bg-dark {
+.bg-dark,
+body {
   background-color: #00001b;
 }
 
