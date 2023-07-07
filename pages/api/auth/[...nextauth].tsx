@@ -10,9 +10,8 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      // @ts-ignore
       async authorize(credentials) {
-        if (!credentials?.password || !credentials.username) {
+        if (!credentials?.password || !credentials?.username) {
           throw new Error("Missing credentials");
         }
 
@@ -24,7 +23,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (user) {
-          return user;
+          return user as any;
         }
         return null;
       },
