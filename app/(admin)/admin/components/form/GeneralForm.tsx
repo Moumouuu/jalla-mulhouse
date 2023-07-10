@@ -19,6 +19,7 @@ interface GeneralFormProps {
 export default function GeneralForm({ general }: GeneralFormProps) {
   const { register, handleSubmit } = useForm();
   const [files, setFile] = useState<any>([]);
+  
   const fileToDataUri = (file: any) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -38,7 +39,6 @@ export default function GeneralForm({ general }: GeneralFormProps) {
   };
 
   const onSubmit: SubmitHandler<any> = async (data) => {
-    console.log(data, files);
     toast.promise(
       fetch("/api/general", {
         method: "POST",
