@@ -43,3 +43,13 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ message: "success" });
 }
+
+export async function DELETE(req: NextRequest) {
+  const { id } = await req.json();
+
+  await prisma.picture.delete({
+    where: { id },
+  });
+
+  return NextResponse.json({ message: "success" });
+}

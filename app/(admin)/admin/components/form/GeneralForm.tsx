@@ -2,23 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { General, Picture } from "@prisma/client";
+import Image from "next/image";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { AiOutlineClose } from "react-icons/ai";
 import HeaderTitle from "../HeaderTitle";
 
 interface GeneralFormProps {
-  promoteMessage: string | null;
-  about: string | null;
+  general: General & {
+    carrousel: Picture[];
+  };
 }
 
-export default function GeneralForm({
-  promoteMessage,
-  about,
-}: GeneralFormProps) {
+export default function GeneralForm({ general }: GeneralFormProps) {
   const { register, handleSubmit } = useForm();
   const [files, setFile] = useState<any>([]);
-
   const fileToDataUri = (file: any) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -52,6 +52,20 @@ export default function GeneralForm({
     );
   };
 
+  const handleDeletePicture = (id: number) => {
+    toast.promise(
+      fetch("/api/general", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+      }).then((res) => res.json()),
+      {
+        loading: "Suppression en cours ...",
+        success: "Supprimé !",
+        error: "Une erreur est survenue",
+      }
+    );
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -68,7 +82,7 @@ export default function GeneralForm({
       />
       <Input
         placeholder="Entrez le message que vous souhaitez afficher ..."
-        defaultValue={promoteMessage ?? ""}
+        defaultValue={general.promoteMessage ?? ""}
         {...register("promoteMessage")}
       />
       <HeaderTitle
@@ -77,7 +91,7 @@ export default function GeneralForm({
       />
       <Textarea
         placeholder="Entrez votre description ..."
-        defaultValue={about ?? ""}
+        defaultValue={general.about ?? ""}
         {...register("about")}
       />
       <HeaderTitle
@@ -90,6 +104,22 @@ export default function GeneralForm({
         multiple
         onChange={(e) => handleChange(e)}
       />
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        {general.carrousel.map((item: Picture) => (
+          <div key={item.id} className="relative flex items-center justify-end">
+            <Image
+              alt="picture for the carrousel"
+              src={item.binary}
+              height={200}
+              width={200}
+            />
+            <AiOutlineClose
+              onClick={() => handleDeletePicture(item.id)}
+              className="text-red-600 text-2xl absolute right-3 top-3 cursor-pointer"
+            />
+          </div>
+        ))}
+      </div>
       <div>
         <Button type="submit">Enregistrer</Button>
       </div>
