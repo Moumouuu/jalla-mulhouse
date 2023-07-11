@@ -67,6 +67,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
     setPromos((prev: any) => [
       ...prev,
       {
+        id: Math.floor(Math.random() * (1000000000 - 999) + 999),
         discount: 0,
         name: "",
         launchDay: new Date(),
@@ -75,18 +76,34 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
     ]);
   };
 
-  const setPromotion = (e: any, product: any) => {
-    //todo : verif que la promo est bien appliqué au produit après le submit (pas de bug)
-    product.promotion = e;
+  const submitData = () => {
+    console.log({ promos: promos, products: productsList });
+    toast.promise(
+      fetch("/api/products", {
+        method: "POST",
+        body: JSON.stringify({ promos: promos, products: productsList }),
+      }).then((res) => res.json()),
+      {
+        loading: "Enregistrement...",
+        success: "Enregistré !",
+        error: "Erreur lors de l'enregistrement !",
+      }
+    );
   };
 
-  const submitData = () => {
-    /*
-    todo : les promos sont pas sync avec les produits -> quand on ajoute une promo pas dessuit on peut la selectionner
-    todo : send data to api & dont forget to remove promotion if their not in the [] anymore
-    parcourir le [] et si l'id n'est pas dans le [] alors delete sinon l'ajouter
-    */
-    console.log({ promos: promos, products: productsList });
+  const deleteProduct = (id: number) => {
+    console.log("delte");
+    toast.promise(
+      fetch("/api/products", {
+        method: "DELETE",
+        body: JSON.stringify({ id: id }),
+      }).then((res) => res.json()),
+      {
+        loading: "Suppression...",
+        success: "Supprimé !",
+        error: "Erreur lors de la suppression !",
+      }
+    );
   };
 
   return (
@@ -163,12 +180,15 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
                 />
               </TableCell>
               <TableCell>
-                <Select onValueChange={(e) => setPromotion(e, product)}>
+                <Select onValueChange={(e) => (product.promotion = e)}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue
                       placeholder={
                         product.promotion
-                          ? product.promotion.discount + "%"
+                          ? product.promotion.name +
+                            " " +
+                            product.promotion.discount +
+                            "%"
                           : "Choisir"
                       }
                     />
@@ -183,7 +203,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
                 </Select>
               </TableCell>
               <TableCell>
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger>
                     <BsThreeDotsVertical className="text-xl" />
                   </DropdownMenuTrigger>
@@ -193,7 +213,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
                     <DropdownMenuItem>
                       <AiFillEdit
                         onClick={() => {
-                          /*todo: edit product*/
+                          /* todo: edit product*/
                         }}
                         className="mr-1 text-xl"
                       />
@@ -202,7 +222,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
                     <DropdownMenuItem>
                       <ImBin
                         onClick={() => {
-                          /*todo: delete product*/
+                          deleteProduct(product.id);
                         }}
                         className="mr-1 text-xl"
                       />

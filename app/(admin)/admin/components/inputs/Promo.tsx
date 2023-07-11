@@ -20,8 +20,12 @@ interface PromoProps {
 
 export default function Promo({ promo, promos, setPromos }: PromoProps) {
   const discounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-  const [startDiscount, setStartDiscount] = useState<Date>(new Date());
-  const [endDiscount, setEndDiscount] = useState<Date>(new Date());
+  const [startDiscount, setStartDiscount] = useState<Date>(
+    promo.launchDay ?? new Date()
+  );
+  const [endDiscount, setEndDiscount] = useState<Date>(
+    promo.endDay ?? new Date()
+  );
 
   useEffect(() => {
     promo.launchDay = startDiscount;

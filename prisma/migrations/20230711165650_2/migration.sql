@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Height" ALTER COLUMN "height" SET DATA TYPE TEXT;
