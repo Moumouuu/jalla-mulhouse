@@ -19,7 +19,7 @@ interface GeneralFormProps {
 export default function GeneralForm({ general }: GeneralFormProps) {
   const { register, handleSubmit } = useForm();
   const [files, setFile] = useState<any>([]);
-  
+
   const fileToDataUri = (file: any) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -33,7 +33,7 @@ export default function GeneralForm({ general }: GeneralFormProps) {
     for (let i = 0; i < files.target.files.length; i++) {
       const file = files.target.files[i];
       fileToDataUri(file).then((dataUri) => {
-        setFile((prev: any) => [...prev, { bin: dataUri }]);
+        setFile((prev: any) => [...prev, { binary: dataUri }]);
       });
     }
   };
@@ -54,7 +54,7 @@ export default function GeneralForm({ general }: GeneralFormProps) {
 
   const handleDeletePicture = (id: number) => {
     toast.promise(
-      fetch("/api/general", {
+      fetch("/api/picture", {
         method: "DELETE",
         body: JSON.stringify({ id }),
       }).then((res) => res.json()),

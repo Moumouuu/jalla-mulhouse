@@ -77,7 +77,6 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
   };
 
   const submitData = () => {
-    console.log({ promos: promos, products: productsList });
     toast.promise(
       fetch("/api/products", {
         method: "POST",
@@ -92,7 +91,6 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
   };
 
   const deleteProduct = (id: number) => {
-    console.log("delte");
     toast.promise(
       fetch("/api/products", {
         method: "DELETE",
@@ -210,22 +208,20 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>{product.title}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <AiFillEdit
-                        onClick={() => {
-                          /* todo: edit product*/
-                        }}
-                        className="mr-1 text-xl"
-                      />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        router.push("products/" + product.id);
+                      }}
+                    >
+                      <AiFillEdit className="mr-1 text-xl" />
                       Modifier
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <ImBin
-                        onClick={() => {
-                          deleteProduct(product.id);
-                        }}
-                        className="mr-1 text-xl"
-                      />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        deleteProduct(product.id);
+                      }}
+                    >
+                      <ImBin className="mr-1 text-xl" />
                       Supprimer
                     </DropdownMenuItem>
                   </DropdownMenuContent>

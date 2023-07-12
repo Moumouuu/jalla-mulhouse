@@ -3,10 +3,17 @@ import { Color, Height } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { title, description, colors, sizes, images } = await req.json();
+  const { id, title, description, colors, sizes, images } = await req.json();
 
   if (!title || !description) {
     throw new Error("Title and description are required");
+  }
+
+  if (id) {
+    const res = await prisma.product.delete({
+      where: { id: id },
+    });
+    if (!res) throw new Error("Error during product deletion");
   }
 
   const sizesFormated = sizes.map((size: Height) => {
@@ -28,7 +35,7 @@ export async function POST(req: NextRequest) {
       },
       pictures: {
         create: images.map((image: any) => ({
-          binary: image.bin.toString(),
+          binary: image.binary?.toString(),
         })),
       },
     },

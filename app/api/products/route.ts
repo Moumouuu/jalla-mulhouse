@@ -42,7 +42,6 @@ export async function POST(req: NextRequest) {
     promos.forEach(async (promo: any) => {
       if (promo.discount == product.promotion) {
         product.promotionId = promo.id;
-        console.log(product);
       }
     });
 
@@ -69,3 +68,4 @@ export async function DELETE(req: NextRequest) {
   if (!deletedProduct) throw new Error("Product not deleted");
   return NextResponse.json({ message: "Product deleted" });
 }
+
