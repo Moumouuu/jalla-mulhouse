@@ -3,7 +3,8 @@ import { Color, Height } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { id, title, description, colors, sizes, images } = await req.json();
+  const { id, title, description, colors, sizes, images, product } =
+    await req.json();
 
   if (!title || !description) {
     throw new Error("Title and description are required");
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest) {
     };
   });
 
-  const product = await prisma.product.create({
+  const newProduct = await prisma.product.create({
     data: {
       title,
       description,
@@ -38,12 +39,15 @@ export async function POST(req: NextRequest) {
           binary: image.binary?.toString(),
         })),
       },
+      new: product.new,
+      selected: product.selected,
+      promotionId: product.promotionId,
     },
   });
 
-  if (!product) {
+  if (!newProduct) {
     throw new Error("Error creating product");
   }
 
-  return NextResponse.json({ success: "Création réussi" });
+  return NextResponse.json({ newProduct });
 }

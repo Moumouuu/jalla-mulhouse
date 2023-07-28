@@ -12,6 +12,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Color, Height, Picture } from "@prisma/client";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -32,7 +33,9 @@ export default function ProductItemForm({ product }: ProductItemFormProps) {
   const [colors, setColor] = useState<Color[]>(product?.colors || []);
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
 
-  const submitData = (data: any) => {
+  const router = useRouter();
+
+  const submitData = async (data: any) => {
     toast.promise(
       fetch("/api/new", {
         method: "POST",
@@ -46,10 +49,11 @@ export default function ProductItemForm({ product }: ProductItemFormProps) {
           colors: colors,
           sizes: sizes,
           images: files,
+          product,
         }),
-      }),
+      }).then(() => router.push("/admin/products")),
       {
-        loading: "Création en cours ...",
+        loading: "Création / Modification en cours ...",
         success: "Produit enregistré !",
         error: "Erreur lors de la création du produit.",
       }

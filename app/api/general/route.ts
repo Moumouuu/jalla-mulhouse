@@ -33,8 +33,8 @@ export async function POST(req: NextRequest) {
     files.forEach(async (file: any) => {
       const res = await prisma.picture.create({
         data: {
-          binary: file.bin,
-          generalId: general?.id || resUpdated.id,
+          binary: file.binary,
+          generalId: resUpdated.id,
         },
       });
       if (!res) throw new Error("Error creating picture");

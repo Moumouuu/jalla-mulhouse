@@ -34,6 +34,18 @@ export default function Promo({ promo, promos, setPromos }: PromoProps) {
 
   const removePromotion = (id: Number) => {
     setPromos((prev: any) => prev.filter((promo: any) => promo.id !== id));
+
+    toast.promise(
+      fetch("/api/promo/", {
+        method: "DELETE",
+        body: JSON.stringify({ id: id }),
+      }).then((res) => res.json()),
+      {
+        loading: "Suppression de la promotion...",
+        success: "Promotion supprimée",
+        error: "Une erreur est survenue",
+      }
+    );
   };
 
   const updateName = (e: any) => {

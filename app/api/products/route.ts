@@ -1,27 +1,12 @@
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { promos, products } = await req.json();
 
-  const allPromos = await prisma.promotion.findMany();
-  // delete promo that not in actual promotion (user delete with the bin icon)
-  allPromos.forEach(async (promo: any) => {
-    let promoExist = false;
-    promos.forEach((newPromo: any) => {
-      if (promo.id == newPromo.id) {
-        promoExist = true;
-      }
-    });
-    if (!promoExist) {
-      const deletedPromo = await prisma.promotion.delete({
-        where: { id: promo.id },
-      });
-      if (!deletedPromo) throw new Error("Promo not deleted");
-    }
-  });
-
   //update promo if exists or create new promo
+  // todo : cant create new promo
   promos.forEach(async (promo: any) => {
     //if promo.id doesnt exist in database -> new promo
     const updatedPromo = await prisma.promotion.upsert({
@@ -55,7 +40,7 @@ export async function POST(req: NextRequest) {
     if (!updatedProduct) throw new Error("Product not updated");
   });
 
-  return NextResponse.json({ message: "Products updated" });
+  return redirect("/admin/products");
 }
 
 export async function DELETE(req: NextRequest) {
@@ -68,4 +53,3 @@ export async function DELETE(req: NextRequest) {
   if (!deletedProduct) throw new Error("Product not deleted");
   return NextResponse.json({ message: "Product deleted" });
 }
-

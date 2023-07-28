@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/table";
 import { Product, Promotion } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { AiFillEdit, AiOutlinePlus } from "react-icons/ai";
@@ -47,6 +47,10 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
   const [productsList] = useState<Product[]>(products);
   const router = useRouter();
   const { handleSubmit } = useForm();
+
+  useEffect(() => {
+    router.refresh();
+  }, [productsList, router]);
 
   const addPromotion = (e: any) => {
     e.preventDefault();
@@ -81,7 +85,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
       fetch("/api/products", {
         method: "POST",
         body: JSON.stringify({ promos: promos, products: productsList }),
-      }).then((res) => res.json()),
+      }),
       {
         loading: "Enregistrement...",
         success: "Enregistré !",
@@ -149,7 +153,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productsList.map((product: any) => (
+          {productsList?.map((product: any) => (
             <TableRow key={product.id}>
               <TableCell>{product.title}</TableCell>
               <TableCell>{product.height[0].price}€</TableCell>

@@ -7,13 +7,6 @@ import ProductItemForm from "../../components/form/ProductItemForm";
 export default async function EditProductPage({ params }: any) {
   const product = await getProduct(params.id);
 
-  if (!product)
-    return (
-      <span className="text-red-500">
-        Une erreur est survenue lors du chargement de la page.
-      </span>
-    );
-
   return (
     <div className="bg-dark w-[100vw] text-white p-3 md:p-5">
       <Toaster />
