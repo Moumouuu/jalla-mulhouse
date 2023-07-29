@@ -156,7 +156,7 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
           {productsList?.map((product: any) => (
             <TableRow key={product.id}>
               <TableCell>{product.title}</TableCell>
-              <TableCell>{product.height[0].price}€</TableCell>
+              <TableCell>{product.height[0]?.price}€</TableCell>
               <TableCell>
                 <Checkbox
                   defaultChecked={product.new}
