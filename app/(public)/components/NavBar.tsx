@@ -49,12 +49,14 @@ export default function NavBar({ menus, products }: NavBarProps) {
   return (
     <div className={`bg-white p-3 w-[100vw] ` + italiana.className}>
       <div className="flex items-start justify-between">
-        <Image
-          src="/assets/images/jalla-logo.png"
-          width={200}
-          height={200}
-          alt="Logo jalla"
-        />
+        <Link href={"/"}>
+          <Image
+            src="/assets/images/jalla-logo.png"
+            width={200}
+            height={200}
+            alt="Logo jalla"
+          />
+        </Link>
         <div className="flex flex-col items-center">
           <div className="relative">
             <input
@@ -78,7 +80,7 @@ export default function NavBar({ menus, products }: NavBarProps) {
                           alt="Item"
                           className="object-cover rounded"
                         />
-                        <p className="mx-2">{product.title.substr(0,15)}...</p>
+                        <p className="mx-2">{product.title.substr(0, 15)}...</p>
                       </div>
                     </div>
                   </Link>

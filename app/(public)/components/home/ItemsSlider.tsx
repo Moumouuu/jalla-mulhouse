@@ -10,6 +10,10 @@ interface ItemsSliderProps {
 }
 
 export default function ItemsSlider({ items, label }: ItemsSliderProps) {
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <>
       <h2
@@ -20,7 +24,7 @@ export default function ItemsSlider({ items, label }: ItemsSliderProps) {
       >
         {label}
       </h2>
-      <div className="text-black w-full mx-1 lg:mx-4 grid align-middle gap-5 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-x-scroll">
+      <div className="w-full grid grid-col-2 grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
         {items?.map((item: any, index: any) => (
           <ProductCard key={index} item={item} />
         ))}

@@ -77,8 +77,8 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <div className="flex justify-between px-3 w-full bg-white">
-        <p className={italiana.className + " text-sm"}>
+      <div className="flex flex-col lg:flex-row justify-between px-3 w-full bg-white">
+        <p className={italiana.className + " text-sm my-2"}>
           Website designed & developed by{" "}
           <Link
             href="https://pluviaux.fr"
@@ -89,9 +89,15 @@ export default function Footer() {
             Robin Pluviaux
           </Link>
         </p>
-        <p className={italiana.className + " text-sm"}>
+        <p className={italiana.className + " text-sm my-2"}>
           Copyright © 2023 - All right reserved by Jalla mulhouse
         </p>
+        <Link
+          href={"/admin"}
+          className={italiana.className + " underline underline-offset-2 my-2"}
+        >
+          Admin
+        </Link>
       </div>
     </>
   );

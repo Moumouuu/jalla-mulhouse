@@ -1,4 +1,5 @@
 "use client";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
@@ -53,95 +54,108 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
             <FiMenu size={30} color="black" />
           </SheetTrigger>
           <SheetContent side={"left"}>
-            <SheetHeader>
-              <SheetTitle>
-                <Image
-                  src="/assets/images/jalla-logo.png"
-                  width={150}
-                  height={150}
-                  alt="Logo jalla"
-                />
-              </SheetTitle>
-              <SheetDescription>
-                <div className="flex flex-col text-black text-left ">
-                  {menus?.map((menu: any, index: any) => (
-                    <>
-                      <Link
-                        key={index}
-                        href={"/search?q=" + menu.name}
-                        className={"my-3 w-full bg-black/10"}
-                      >
-                        <p className="text-xl uppercase text-center">
-                          {menu.name}
-                        </p>
-                      </Link>
-                      {menu.subMenu?.map((subMenu: any, index: any) => (
-                        <>
-                          <Link
-                            key={index}
-                            href={"/search?q=" + subMenu.name}
-                            className={"my-2"}
-                          >
-                            <p className="text-lg uppercase underline underline-offset-2">
-                              {subMenu.name}
-                            </p>
-                          </Link>
-                          {subMenu.terMenu?.map((terMenu: any, index: any) => (
+            <ScrollArea className="h-full w-full">
+              <SheetHeader>
+                <SheetTitle>
+                  <Link href={"/"}>
+                    <Image
+                      src="/assets/images/jalla-logo.png"
+                      width={150}
+                      height={150}
+                      alt="Logo jalla"
+                    />
+                  </Link>
+                </SheetTitle>
+                <SheetDescription>
+                  <div className="flex flex-col text-black text-left ">
+                    {menus?.map((menu: any, index: any) => (
+                      <>
+                        <Link
+                          key={index}
+                          href={"/search?q=" + menu.name}
+                          className={"my-3 w-full bg-black/10"}
+                        >
+                          <p className="text-xl uppercase text-center">
+                            {menu.name}
+                          </p>
+                        </Link>
+                        {menu.subMenu?.map((subMenu: any, index: any) => (
+                          <>
                             <Link
                               key={index}
-                              href={"/search?q=" + terMenu.name}
+                              href={"/search?q=" + subMenu.name}
                               className={"my-2"}
                             >
-                              <p className="text-lg text-gray-700 ml-4">
-                                {terMenu.name}
+                              <p className="text-lg uppercase underline underline-offset-2">
+                                {subMenu.name}
                               </p>
                             </Link>
-                          ))}
-                        </>
-                      ))}
-                    </>
-                  ))}
-                </div>
+                            {subMenu.terMenu?.map(
+                              (terMenu: any, index: any) => (
+                                <Link
+                                  key={index}
+                                  href={"/search?q=" + terMenu.name}
+                                  className={"my-2"}
+                                >
+                                  <p className="text-lg text-gray-700 ml-4">
+                                    {terMenu.name}
+                                  </p>
+                                </Link>
+                              )
+                            )}
+                          </>
+                        ))}
+                      </>
+                    ))}
+                  </div>
 
-                <div className="flex items-center mt-10">
-                  {socialNetworks.map((socialNetwork, index: any) => (
-                    <>
-                      <Link
-                        key={index}
-                        href={socialNetwork.url}
-                        target="_blank"
-                        className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 mx-2"
-                      >
-                        {socialNetwork.icons}
-                      </Link>
-                    </>
-                  ))}
-                </div>
-              </SheetDescription>
-            </SheetHeader>
+                  <div className="flex items-center mt-10">
+                    {socialNetworks.map((socialNetwork, index: any) => (
+                      <>
+                        <Link
+                          key={index}
+                          href={socialNetwork.url}
+                          target="_blank"
+                          className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 mx-2"
+                        >
+                          {socialNetwork.icons}
+                        </Link>
+                      </>
+                    ))}
+                  </div>
+                </SheetDescription>
+              </SheetHeader>
+            </ScrollArea>
           </SheetContent>
         </Sheet>
 
         <div className="flex items-center ">
-          <Image
-            src="/assets/images/jalla-logo.png"
-            width={80}
-            height={80}
-            alt="Logo jalla"
-          />
+          <Link href={"/"}>
+            <Image
+              src="/assets/images/jalla-logo.png"
+              width={80}
+              height={80}
+              alt="Logo jalla"
+            />
+          </Link>
         </div>
       </div>
 
       <div className="flex items-center relative">
         <input
           onChange={(e) => setSearch(e.target.value)}
+          value={search}
           className="flex h-10 w-full rounded-md border border-input bg-transparent px-5 py-2 text-md ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 my-2 text-black"
           placeholder="Rechercher un produit"
         />
         {search.length > 0 && (
           <div className="bg-white absolute top-12 border min-w-full z-10">
             {filteredProducts?.map((product: any, index: any) => (
-              <Link href={`/product/${product.id}`} key={index}>
+              <Link
+                href={`/product/${product.id}`}
+                key={index}
+                onClick={() => setSearch("")}
+              >
                 <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
                   <div className="flex flex-row items-center">
                     <Image
@@ -151,7 +165,9 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
                       alt="Item"
                       className="object-cover rounded"
                     />
-                    <p className="mx-2 text-black">{product.title.substr(0, 15)}...</p>
+                    <p className="mx-2 text-black">
+                      {product.title.substr(0, 15)}...
+                    </p>
                   </div>
                 </div>
               </Link>

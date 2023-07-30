@@ -27,11 +27,15 @@ export default function ProductCard({ item }: ItemProps) {
     promoAlreadyAvailable();
   }, []);
 
+  if (!item.visible) {
+    return null;
+  }
 
   return (
     <Link
+      prefetch={true}
       href={`/product/${item.id}`}
-      className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2"
+      className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2 w-[200px] lg:w-[300px]"
     >
       <div className="h-full w-full flex justify-center">
         <img
@@ -71,7 +75,7 @@ export default function ProductCard({ item }: ItemProps) {
         <div className="flex flex-col">
           <p
             className={
-              italiana.className + (item.promotion ? " line-through" : " ")
+              italiana.className + (item.promotion ? ` line-through` : " ")
             }
           >
             {item.height[0]?.price}€

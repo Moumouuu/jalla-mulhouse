@@ -74,7 +74,7 @@ export default function ProductPage({ product }: ProductPageProps) {
               showThumbs={false}
             />
           </div>
-          <div className="flex flex-col mx-2 my-8">
+          <div className="flex flex-col my-8">
             <h4
               className={italiana.className + " text-xl lg:text-4xl uppercase"}
             >
@@ -121,7 +121,7 @@ export default function ProductPage({ product }: ProductPageProps) {
               className={
                 italiana.className +
                 (product.promotion
-                  ? "line-through"
+                  ? " line-through"
                   : " " + " text-xl lg:text-3xl")
               }
             >

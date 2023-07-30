@@ -12,9 +12,9 @@ export default async function page({ params }: any) {
   }
 
   return (
-    <>
+    <div className="mx-2">
       <ProductPage product={product} />
       <MoreProduct purposeProduct={purposeProduct} />
-    </>
+    </div>
   );
 }

@@ -46,7 +46,6 @@ export default function ProductItemForm({
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
   const [selectedMenu, setSelectedMenu] = useState<string>(product?.menu || "");
   const [menusList, setMenusList] = useState<any>(menus || []);
-
   const formatMenuList = () => {
     let allMenus: any = [];
 
@@ -232,7 +231,11 @@ export default function ProductItemForm({
         <SelectContent>
           <SelectGroup>
             {menusList?.map((menu: any, index: any) => (
-              <SelectItem key={index} value={menu.id}>
+              <SelectItem
+                key={index}
+                value={menu.name}
+                defaultValue={product.menu}
+              >
                 {menu.name}
               </SelectItem>
             ))}
@@ -243,7 +246,7 @@ export default function ProductItemForm({
       <HeaderTitle title="Photos" subtitle="Les photos de votre produit." />
       <Input type="file" multiple onChange={(e) => handleChange(e)} />
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {product?.pictures.map((item: Picture) => (
+        {product?.pictures?.map((item: Picture) => (
           <div key={item.id} className="relative flex items-center justify-end">
             <Image
               alt="picture for the carrousel"

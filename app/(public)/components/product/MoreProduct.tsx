@@ -31,7 +31,7 @@ export default function MoreProduct({ purposeProduct }: MoreProductProps) {
         >
           Ces produits pourraient vous intéresser
         </h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 overflow-x-scroll">
+        <div className="w-full grid grid-col-2 grid-flow-col gap-4 lg:gap-6 overflow-x-auto">
           {purposeProduct?.splice(0, 5).map((product: any, index: any) => (
             <ProductCard key={index} item={product} />
           ))}
