@@ -37,7 +37,7 @@ export default function NavBarMobile({ menus }: NavBarProps) {
   return (
     <div
       className={
-        "flex text-white bg-white p-3 w-full items-center justify-between " +
+        "flex text-white bg-white p-3 w-full items-center justify-between overflow-y-scroll" +
         italiana.className
       }
     >
@@ -98,7 +98,7 @@ export default function NavBarMobile({ menus }: NavBarProps) {
                 </div>
 
                 <div className="flex items-center mt-10">
-                  {socialNetworks.map((socialNetwork, index) => (
+                  {socialNetworks.map((socialNetwork, index:any) => (
                     <>
                       <Link
                         key={index}

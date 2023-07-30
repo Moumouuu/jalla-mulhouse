@@ -39,9 +39,9 @@ export async function POST(req: NextRequest) {
           binary: image.binary?.toString(),
         })),
       },
-      new: product.new,
-      selected: product.selected,
-      promotionId: product.promotionId,
+      new: product?.new ?? true,
+      selected: product?.selected ?? false,
+      promotionId: product?.promotionId ?? null,
     },
   });
 

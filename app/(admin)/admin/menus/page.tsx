@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import MenuForm from "../components/form/MenuForm";
 
-export default async function page() {
+export default async function Page() {
   const menu = await getMenu();
 
   if (!menu) {

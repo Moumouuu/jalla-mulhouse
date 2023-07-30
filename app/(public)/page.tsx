@@ -1,11 +1,11 @@
 import getGeneral from "@/actions/getGeneral";
 import getNewItems from "@/actions/getNewItems";
 import getSelectedItems from "@/actions/getSelectedItems";
-import About from "./components/About";
-import { CarouselSlider as Carousel } from "./components/Carousel";
-import ContactForm from "./components/ContactForm";
-import ItemsSlider from "./components/ItemsSlider";
-import Map from "./components/Map";
+import { CarouselSlider as Carousel } from "./components/home/Carousel";
+import ContactForm from "./components/home/ContactForm";
+import Map from "./components/home/Map";
+import About from "./components/home/About";
+import ItemsSlider from "./components/home/ItemsSlider";
 
 export default async function Home() {
   const general = await getGeneral();

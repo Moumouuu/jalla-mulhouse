@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import GeneralForm from "../components/form/GeneralForm";
 
-export default async function page() {
+export default async function Page() {
   const general = await getGeneral();
 
   if (!general) {

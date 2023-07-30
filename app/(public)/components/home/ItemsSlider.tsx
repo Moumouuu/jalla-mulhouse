@@ -2,7 +2,7 @@
 
 import { italiana } from "@/utils/font";
 import { Product } from "@prisma/client";
-import ProductCard from "./ProductCard";
+import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
   items: Product[];

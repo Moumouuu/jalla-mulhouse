@@ -1,6 +1,5 @@
 "use client";
 import { italiana, julius } from "@/utils/font";
-import Image from "next/image";
 import Link from "next/link";
 
 interface ItemProps {
@@ -12,34 +11,50 @@ export default function ProductCard({ item }: ItemProps) {
     return price - (price * discount) / 100;
   };
 
+  const promoAlreadyAvailable = () => {
+    const currentDate = new Date();
+    const startDate = new Date(item.promotion.startDate);
+    const endDate = new Date(item.promotion.endDate);
+
+    if (currentDate >= startDate && currentDate <= endDate) {
+      return true;
+    }
+    return false;
+  };
+
   return (
-    <Link href={`/product/${item.id}`} className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2">
-      <div className="">
-        <Image
+    <Link
+      href={`/product/${item.id}`}
+      className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2"
+    >
+      <div className="h-full w-full flex justify-center">
+        <img
           src={item.pictures[0]?.binary}
-          width={200}
-          height={200}
           alt="Item"
+          className="object-cover"
         />
       </div>
       <div className="flex w-full p-2 m-2 justify-between">
         <div className="flex flex-col ">
-          <p className={julius.className + " mb-3"}>{item.title}</p>
+          <p className={julius.className + " mb-3"}>
+            {item.title.substr(0, 10)}...
+          </p>
           <div className="flex">
             {item.new ? (
               <div
                 className={
                   italiana.className +
-                  " px-4 bg-black  text-white rounded-xl mr-2 uppercase"
+                  " px-2 lg:px-4 bg-black text-sm lg:text-lg  text-white rounded-xl mr-2 uppercase"
                 }
               >
                 New
               </div>
             ) : null}
-            {item.promotion ? (
+            {item.promotion && promoAlreadyAvailable() ? (
               <div
                 className={
-                  italiana.className + " px-4 bg-black text-white rounded-xl"
+                  italiana.className +
+                  " px-2 lg:px-4 text-sm lg:text-lg bg-black text-white rounded-xl"
                 }
               >
                 -{item.promotion.discount}%
@@ -50,7 +65,7 @@ export default function ProductCard({ item }: ItemProps) {
         <div className="flex flex-col">
           <p
             className={
-              italiana.className + item.promotion ? "line-through" : ""
+              italiana.className + (item.promotion ? " line-through" : " ")
             }
           >
             {item.height[0]?.price}€
