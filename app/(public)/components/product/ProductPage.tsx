@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CarouselSlider } from "../home/Carousel";
 
 interface ProductPageProps {
@@ -18,6 +18,21 @@ interface ProductPageProps {
 
 export default function ProductPage({ product }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
+
+  const promoAlreadyAvailable = () => {
+    const currentDate = new Date();
+    const startDate = new Date(product.promotion?.startDate);
+    const endDate = new Date(product.promotion?.endDate);
+
+    if (currentDate >= startDate && currentDate <= endDate) {
+      return;
+    }
+    product.promotion = null;
+  };
+
+  useEffect(() => {
+    promoAlreadyAvailable();
+  }, []);
 
   const calculatePromotion = useMemo(() => {
     const height = product.height.find(

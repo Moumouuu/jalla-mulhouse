@@ -10,10 +10,15 @@ import { PiMagnifyingGlassLight } from "react-icons/pi";
 
 interface NavBarProps {
   menus: Menu[];
+  products: any;
 }
 
-export default function NavBar({ menus }: NavBarProps) {
+export default function NavBar({ menus, products }: NavBarProps) {
   const [menusList, setMenusList] = useState<Menu[]>(menus);
+  const [search, setSearch] = useState<string>("");
+  const filteredProducts = products.filter((product: any) => {
+    return product.title.toLowerCase().includes(search.toLowerCase());
+  });
 
   const socialNetworks = [
     {
@@ -53,13 +58,35 @@ export default function NavBar({ menus }: NavBarProps) {
         <div className="flex flex-col items-center">
           <div className="relative">
             <input
+              onChange={(e) => setSearch(e.target.value)}
               className="flex h-10 w-full rounded-md border border-input bg-transparent px-5 py-2 text-md ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 my-2 text-black"
               placeholder="Rechercher un produit"
             />
             <div className="absolute top-[50%] right-1 -translate-y-[50%]">
               <PiMagnifyingGlassLight size={20} />
             </div>
+            {search.length > 0 && (
+              <div className="bg-white absolute top-12 border min-w-full z-10">
+                {filteredProducts?.map((product: any, index: any) => (
+                  <Link href={`/product/${product.id}`} key={index}>
+                    <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
+                      <div className="flex flex-row items-center">
+                        <Image
+                          width={60}
+                          height={60}
+                          src={product?.pictures[0]?.binary}
+                          alt="Item"
+                          className="object-cover rounded"
+                        />
+                        <p className="mx-2">{product.title.substr(0,15)}...</p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
+
           <div className="flex ">
             {menusList?.map((menu: any, index) => (
               <div

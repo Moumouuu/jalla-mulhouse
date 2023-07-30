@@ -11,15 +11,21 @@ import { italiana } from "@/utils/font";
 import { Menu } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 
 interface NavBarProps {
   menus: Menu[];
+  products: any;
 }
 
-export default function NavBarMobile({ menus }: NavBarProps) {
+export default function NavBarMobile({ menus, products }: NavBarProps) {
+  const [search, setSearch] = useState<string>("");
+  const filteredProducts = products.filter((product: any) => {
+    return product.title.toLowerCase().includes(search.toLowerCase());
+  });
   const socialNetworks = [
     {
       url: "https://www.facebook.com/jallamulhouse",
@@ -98,7 +104,7 @@ export default function NavBarMobile({ menus }: NavBarProps) {
                 </div>
 
                 <div className="flex items-center mt-10">
-                  {socialNetworks.map((socialNetwork, index:any) => (
+                  {socialNetworks.map((socialNetwork, index: any) => (
                     <>
                       <Link
                         key={index}
@@ -126,11 +132,32 @@ export default function NavBarMobile({ menus }: NavBarProps) {
         </div>
       </div>
 
-      <div className="flex items-center ">
+      <div className="flex items-center relative">
         <input
+          onChange={(e) => setSearch(e.target.value)}
           className="flex h-10 w-full rounded-md border border-input bg-transparent px-5 py-2 text-md ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 my-2 text-black"
           placeholder="Rechercher un produit"
         />
+        {search.length > 0 && (
+          <div className="bg-white absolute top-12 border min-w-full z-10">
+            {filteredProducts?.map((product: any, index: any) => (
+              <Link href={`/product/${product.id}`} key={index}>
+                <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
+                  <div className="flex flex-row items-center">
+                    <Image
+                      width={60}
+                      height={60}
+                      src={product?.pictures[0]?.binary}
+                      alt="Item"
+                      className="object-cover rounded"
+                    />
+                    <p className="mx-2 text-black">{product.title.substr(0, 15)}...</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,6 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -13,7 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Color, Height, Picture } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
@@ -21,9 +29,13 @@ import HeaderTitle from "../HeaderTitle";
 
 interface ProductItemFormProps {
   product?: any;
+  menus?: any;
 }
 
-export default function ProductItemForm({ product }: ProductItemFormProps) {
+export default function ProductItemForm({
+  product,
+  menus,
+}: ProductItemFormProps) {
   const {
     handleSubmit,
     register,
@@ -32,6 +44,27 @@ export default function ProductItemForm({ product }: ProductItemFormProps) {
   const [files, setFile] = useState<any>(product?.pictures || []);
   const [colors, setColor] = useState<Color[]>(product?.colors || []);
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
+  const [selectedMenu, setSelectedMenu] = useState<string>(product?.menu || "");
+  const [menusList, setMenusList] = useState<any>(menus || []);
+
+  const formatMenuList = () => {
+    let allMenus: any = [];
+
+    menus?.forEach((menu: any) => {
+      allMenus.push({ id: menu.id, name: menu.name });
+      menu.subMenu?.forEach((subMenu: any) => {
+        allMenus.push({ id: subMenu.id, name: `-- ${subMenu.name}` });
+        subMenu.terMenu?.forEach((terMenu: any) => {
+          allMenus.push({ id: terMenu.id, name: `---- ${terMenu.name}` });
+        });
+      });
+    });
+    setMenusList(allMenus);
+  };
+
+  useEffect(() => {
+    formatMenuList();
+  }, []);
 
   const router = useRouter();
 
@@ -46,6 +79,8 @@ export default function ProductItemForm({ product }: ProductItemFormProps) {
           id: product?.id,
           title: data.title,
           description: data.description,
+          menu: selectedMenu,
+
           colors: colors,
           sizes: sizes,
           images: files,
@@ -185,6 +220,25 @@ export default function ProductItemForm({ product }: ProductItemFormProps) {
       {errors.description && (
         <span className="text-red-500">Ce champs est obligatoire !</span>
       )}
+
+      <HeaderTitle
+        title="Menu"
+        subtitle='Le menu dans lequel votre produit sera "rangé" .'
+      />
+      <Select onValueChange={(e) => setSelectedMenu(e)}>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Choisis un menu" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {menusList?.map((menu: any, index: any) => (
+              <SelectItem key={index} value={menu.id}>
+                {menu.name}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
 
       <HeaderTitle title="Photos" subtitle="Les photos de votre produit." />
       <Input type="file" multiple onChange={(e) => handleChange(e)} />

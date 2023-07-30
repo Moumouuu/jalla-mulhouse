@@ -3,11 +3,11 @@ import { Color, Height } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { id, title, description, colors, sizes, images, product } =
+  const { id, title, description, colors, sizes, images, product, menu } =
     await req.json();
 
-  if (!title || !description) {
-    throw new Error("Title and description are required");
+  if (!title || !description || !menu) {
+    throw new Error("Title and description and menu are required");
   }
 
   if (id) {
@@ -42,6 +42,7 @@ export async function POST(req: NextRequest) {
       new: product?.new ?? true,
       selected: product?.selected ?? false,
       promotionId: product?.promotionId ?? null,
+      menu: menu,
     },
   });
 

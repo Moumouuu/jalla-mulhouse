@@ -24,12 +24,7 @@ model Product {
   visible     Boolean    @default(true)
   promotion   Promotion? @relation(fields: [promotionId], references: [id])
   promotionId Int?
-  menu        Menu?      @relation(fields: [menuId], references: [id])
-  menuId      Int?
-  subMenu     SubMenu?   @relation(fields: [subMenuId], references: [id])
-  subMenuId   Int?
-  terMenu     TerMenu?   @relation(fields: [terMenuId], references: [id])
-  terMenuId   Int?
+  menu        String?
 }
 
 model Picture {
@@ -76,7 +71,6 @@ model Menu {
   id      Int       @id @default(autoincrement())
   name    String
   subMenu SubMenu[]
-  Product Product[]
 }
 
 model SubMenu {
@@ -85,15 +79,13 @@ model SubMenu {
   fatherMenu Menu      @relation(fields: [menuId], references: [id])
   menuId     Int
   terMenu    TerMenu[]
-  Product    Product[]
 }
 
 model TerMenu {
-  id         Int       @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   name       String
-  fatherMenu SubMenu   @relation(fields: [menuId], references: [id])
+  fatherMenu SubMenu @relation(fields: [menuId], references: [id])
   menuId     Int
-  Product    Product[]
 }
 
 model User {

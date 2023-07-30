@@ -27,7 +27,6 @@ export default function ProductCard({ item }: ItemProps) {
     promoAlreadyAvailable();
   }, []);
 
-  console.log(item);
 
   return (
     <Link
