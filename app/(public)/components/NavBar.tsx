@@ -69,22 +69,26 @@ export default function NavBar({ menus, products }: NavBarProps) {
             </div>
             {search.length > 0 && (
               <div className="bg-white absolute top-12 border min-w-full z-10">
-                {filteredProducts?.map((product: any, index: any) => (
-                  <Link href={`/product/${product.id}`} key={index}>
-                    <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
-                      <div className="flex flex-row items-center">
-                        <Image
-                          width={60}
-                          height={60}
-                          src={product?.pictures[0]?.binary}
-                          alt="Item"
-                          className="object-cover rounded"
-                        />
-                        <p className="mx-2">{product.title.substr(0, 15)}...</p>
+                {filteredProducts
+                  ?.splice(0, 5)
+                  ?.map((product: any, index: any) => (
+                    <Link href={`/product/${product.id}`} key={index}>
+                      <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
+                        <div className="flex flex-row items-center">
+                          <Image
+                            width={60}
+                            height={60}
+                            src={product?.pictures[0]?.binary}
+                            alt="Item"
+                            className="object-cover rounded"
+                          />
+                          <p className="mx-2">
+                            {product.title.substr(0, 15)}...
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
               </div>
             )}
           </div>

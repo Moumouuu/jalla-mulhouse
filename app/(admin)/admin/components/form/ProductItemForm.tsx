@@ -45,7 +45,8 @@ export default function ProductItemForm({
   const [colors, setColor] = useState<Color[]>(product?.colors || []);
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
   const [selectedMenu, setSelectedMenu] = useState<string>(product?.menu || "");
-  const [menusList, setMenusList] = useState<any>(menus || []);
+  const [menusList, setMenusList] = useState<any>([]);
+
   const formatMenuList = () => {
     let allMenus: any = [];
 

@@ -150,7 +150,7 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
         />
         {search.length > 0 && (
           <div className="bg-white absolute top-12 border min-w-full z-10">
-            {filteredProducts?.map((product: any, index: any) => (
+            {filteredProducts?.slice(0, 5)?.map((product: any, index: any) => (
               <Link
                 href={`/product/${product.id}`}
                 key={index}
