@@ -35,7 +35,7 @@ export default function ProductPage({ product }: ProductPageProps) {
   }, []);
 
   const calculatePromotion = useMemo(() => {
-    const height = product.height.find(
+    const height = product.height?.find(
       (height: any) => height.id === heightSelected
     );
 

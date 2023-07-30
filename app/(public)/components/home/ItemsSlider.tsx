@@ -24,7 +24,7 @@ export default function ItemsSlider({ items, label }: ItemsSliderProps) {
       >
         {label}
       </h2>
-      <div className="w-full grid grid-col-2 grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
+      <div className="w-full grid  grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
         {items?.map((item: any, index: any) => (
           <ProductCard key={index} item={item} />
         ))}

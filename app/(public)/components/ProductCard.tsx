@@ -33,7 +33,6 @@ export default function ProductCard({ item }: ItemProps) {
 
   return (
     <Link
-      prefetch={true}
       href={`/product/${item.id}`}
       className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2 w-[200px] lg:w-[300px]"
     >
