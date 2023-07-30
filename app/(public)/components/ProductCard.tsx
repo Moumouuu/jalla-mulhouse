@@ -1,6 +1,7 @@
 "use client";
 import { italiana, julius } from "@/utils/font";
 import Link from "next/link";
+import { useEffect } from "react";
 
 interface ItemProps {
   item: any;
@@ -13,14 +14,18 @@ export default function ProductCard({ item }: ItemProps) {
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
-    const startDate = new Date(item.promotion.startDate);
-    const endDate = new Date(item.promotion.endDate);
+    const startDate = new Date(item.promotion?.startDate);
+    const endDate = new Date(item.promotion?.endDate);
 
     if (currentDate >= startDate && currentDate <= endDate) {
-      return true;
+      return;
     }
-    return false;
+    item.promotion = null;
   };
+
+  useEffect(() => {
+    promoAlreadyAvailable();
+  }, []);
 
   return (
     <Link
@@ -50,7 +55,7 @@ export default function ProductCard({ item }: ItemProps) {
                 New
               </div>
             ) : null}
-            {item.promotion && promoAlreadyAvailable() ? (
+            {item.promotion ? (
               <div
                 className={
                   italiana.className +
