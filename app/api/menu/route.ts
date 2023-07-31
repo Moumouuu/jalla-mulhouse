@@ -4,9 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   let { menuList, subMenuList, terMenuList } = await req.json();
 
-  //todo : add bin icon and delete
-  //todo : verif update
-
   menuList?.forEach(async (menu: any) => {
     // update menu
     const menuUpdate = await prisma.menu.upsert({
@@ -60,7 +57,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const { id } = await req.json();
-  
+
   //todo : bug delete
 
   if (!id) {
@@ -110,22 +107,35 @@ export async function DELETE(req: NextRequest) {
     });
   }
 
-  if(menu){
+  if (menu) {
     menu.subMenu.forEach(async (subMenu: any) => {
-        subMenu.terMenu.forEach(async (terMenu: any) => {
-            await prisma.terMenu.delete({
-                where: { id: terMenu.id },
-            });
+      subMenu.terMenu.forEach(async (terMenu: any) => {
+        await prisma.terMenu.delete({
+          where: { id: terMenu.id },
         });
-        await prisma.subMenu.delete({
-            where: { id: subMenu.id },
-        });
+      });
+      await prisma.subMenu.delete({
+        where: { id: subMenu.id },
+      });
     });
     await prisma.menu.delete({
-        where: { id: Number(id) },
+      where: { id: Number(id) },
     });
-    }
-
+  }
 
   return NextResponse.json({ message: "success" });
+}
+
+export async function GET() {
+  const menuList = await prisma.menu.findMany({
+    include: {
+      subMenu: {
+        include: {
+          terMenu: true,
+        },
+      },
+    },
+  });
+
+  return NextResponse.json(menuList);
 }

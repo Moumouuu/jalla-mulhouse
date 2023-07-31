@@ -16,28 +16,40 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ImBin } from "react-icons/im";
 import HeaderTitle from "../HeaderTitle";
 
-interface MenuFormProps {
-  menu: any[];
-}
-
-export default function MenuForm({ menu }: MenuFormProps) {
+export default function MenuForm() {
   const { handleSubmit } = useForm();
+  //var
   const [menuList, setMenuList] = useState<Menu[]>([]);
   const [subMenuList, setSubMenuList] = useState<any[]>([]);
   const [terMenuList, setTerMenuList] = useState<any[]>([]);
   const [fatherMenuSubMenu, setFatherMenuSubMenu] = useState<string>();
   const [fatherMenuTerMenu, setFatherMenuTerMenu] = useState<string>();
+  const [menus, setMenus] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
 
+  //fetch
   useEffect(() => {
-    formatMenu(menu);
-  }, [menu]);
+    fetchData();
+    formatMenu(menus);
+  }, [loading]);
+
+  //method
+
+  const fetchData = async () => {
+    const res = await fetch("/api/menu", {
+      method: "GET",
+    });
+    const data = await res.json();
+    setMenus(data);
+    setLoading(true);
+  };
 
   const formatMenu = (menus: any) => {
     let menuList: any[] = [];
     let subMenuList: any[] = [];
     let terMenuList: any[] = [];
 
-    menus.forEach((m: any) => {
+    menus?.forEach((m: any) => {
       menuList.push({
         id: m.id,
         name: m.name,
@@ -182,6 +194,10 @@ export default function MenuForm({ menu }: MenuFormProps) {
       }
     );
   };
+
+  if (!menus) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <form

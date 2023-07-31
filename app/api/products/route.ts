@@ -1,12 +1,10 @@
 import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { promos, products } = await req.json();
 
   //update promo if exists or create new promo
-  // todo : cant create new promo
   promos.forEach(async (promo: any) => {
     //if promo.id doesnt exist in database -> new promo
     const updatedPromo = await prisma.promotion.upsert({
@@ -40,7 +38,7 @@ export async function POST(req: NextRequest) {
     if (!updatedProduct) throw new Error("Product not updated");
   });
 
-  return redirect("/admin/products");
+  return NextResponse.json({ message: "success" });
 }
 
 export async function DELETE(req: NextRequest) {
@@ -52,4 +50,17 @@ export async function DELETE(req: NextRequest) {
 
   if (!deletedProduct) throw new Error("Product not deleted");
   return NextResponse.json({ message: "Product deleted" });
+}
+
+export async function GET() {
+  const products = await prisma.product.findMany({
+    include: {
+      colors: true,
+      height: true,
+      pictures: true,
+      promotion: true,
+    },
+  });
+
+  return NextResponse.json({ products });
 }

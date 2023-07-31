@@ -29,24 +29,38 @@ import HeaderTitle from "../HeaderTitle";
 
 interface ProductItemFormProps {
   productItem?: any;
-  menus?: any;
 }
 
-export default function ProductItemForm({
-  productItem,
-  menus,
-}: ProductItemFormProps) {
+export default function ProductItemForm({ productItem }: ProductItemFormProps) {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm();
+
+  //var
   const product = productItem instanceof Array ? productItem[0] : productItem;
   const [files, setFile] = useState<any>(product?.pictures || []);
   const [colors, setColor] = useState<Color[]>(product?.colors || []);
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [menusList, setMenusList] = useState<any>([]);
+  const [menus, setMenus] = useState<any>([]);
+
+  //fetch
+  useEffect(() => {
+    fetchData();
+    formatMenuList();
+  }, []);
+
+  //method
+  const fetchData = async () => {
+    const res = await fetch("/api/menu", {
+      method: "GET",
+    });
+    const data = await res.json();
+    setMenus(data);
+  };
 
   const formatMenuList = () => {
     let allMenus: any = [];
@@ -62,10 +76,6 @@ export default function ProductItemForm({
     });
     setMenusList(allMenus);
   };
-
-  useEffect(() => {
-    formatMenuList();
-  }, []);
 
   const router = useRouter();
 
@@ -184,6 +194,10 @@ export default function ProductItemForm({
       }
     );
   };
+
+  if (!menus) {
+    return <div>Loading ...</div>;
+  }
 
   return (
     <form

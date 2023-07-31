@@ -39,18 +39,29 @@ import Promo from "../inputs/Promo";
 
 interface ProductFormProps {
   promotion: Promotion[];
-  products: Product[];
 }
 
-export default function ProductForm({ promotion, products }: ProductFormProps) {
+export default function ProductForm({ promotion }: ProductFormProps) {
+  //var
   const [promos, setPromos] = useState<Promotion[]>(promotion);
-  const [productsList] = useState<Product[]>(products);
+  const [productsList, setProductList] = useState<Product[]>();
   const router = useRouter();
   const { handleSubmit } = useForm();
 
+  //fetch
   useEffect(() => {
     router.refresh();
+    fetchData();
   }, [productsList, router]);
+
+  //method
+  const fetchData = async () => {
+    const res = await fetch("/api/products", {
+      method: "GET",
+    });
+    const data = await res.json();
+    setProductList(data.products);
+  };
 
   const addPromotion = (e: any) => {
     e.preventDefault();
@@ -84,8 +95,8 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
     toast.promise(
       fetch("/api/products", {
         method: "POST",
-        body: JSON.stringify({ promos: promos, products: productsList }),
-      }),
+        body: JSON.stringify({ promos, products: productsList }),
+      }).then((res) => res.json()),
       {
         loading: "Enregistrement...",
         success: "Enregistré !",
@@ -107,6 +118,10 @@ export default function ProductForm({ promotion, products }: ProductFormProps) {
       }
     );
   };
+
+  if (!productsList) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <form
