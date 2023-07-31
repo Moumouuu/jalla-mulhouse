@@ -52,7 +52,7 @@ export default function ProductForm({ promotion }: ProductFormProps) {
   useEffect(() => {
     router.refresh();
     fetchData();
-  }, [productsList, router]);
+  }, [router]);
 
   //method
   const fetchData = async () => {
