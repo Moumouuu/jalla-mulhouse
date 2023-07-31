@@ -93,7 +93,7 @@ export default function ProductForm({ promotion }: ProductFormProps) {
 
   const submitData = () => {
     toast.promise(
-      fetch("/api/test", {
+      fetch("/api/products", {
         method: "POST",
         body: JSON.stringify({ promos, products: productsList }),
       }).then((res) => res.json()),

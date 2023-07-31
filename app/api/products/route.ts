@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       if (product.promotion) {
         const promo = await prisma.promotion.findFirst({
           where: {
-            discount: Number(product.promotion),
+            discount: Number(product.promotion.discount),
           },
         });
         if (!promo) throw new Error("Error finding promo");
