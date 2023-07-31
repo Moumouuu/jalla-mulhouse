@@ -6,15 +6,73 @@ export async function POST(req: NextRequest) {
 
   if (promos) {
     promos.forEach(async (promo: any) => {
-      const res = await prisma.promotion.create({
-        data: {
-          name: promo.name,
-          discount: Math.floor(Math.random() * (100 - 10) + 10),
-          launchDay: new Date(promo.launchDay),
-          endDay: new Date(promo.endDay),
+      // promo exist ?
+      const p = await prisma.promotion.findFirst({
+        where: {
+          id: Number(promo.id),
         },
       });
+
+      if (p) {
+        await prisma.promotion.update({
+          where: { id: promo.id },
+          data: {
+            name: promo.name,
+            discount: Number(promo.discount),
+            launchDay: promo.launchDay,
+            endDay: promo.endDay,
+          },
+        });
+      } else {
+        await prisma.promotion.create({
+          data: {
+            name: promo.name,
+            discount: Number(promo.discount),
+            launchDay: promo.launchDay,
+            endDay: promo.endDay,
+          },
+        });
+      }
     });
   }
-  return NextResponse.json({ message: "success" });
+
+  if (products) {
+    products.forEach(async (product: any) => {
+      let promotionId = null;
+      //find promotionId from discount
+      if (product.promotion) {
+        const promo = await prisma.promotion.findFirst({
+          where: {
+            discount: Number(product.promotion),
+          },
+        });
+        if (!promo) throw new Error("Error finding promo");
+        promotionId = promo.id;
+      }
+
+      // product exist ?
+      const p = await prisma.product.findFirst({
+        where: {
+          id: product.id,
+        },
+      });
+
+      // if product exist & promotionId is different
+      if (p) {
+        await prisma.product.update({
+          where: { id: product.id },
+          data: {
+            new: product.new,
+            selected: product.selected,
+            promotionId:
+              promotionId !== p.promotionId ? promotionId : p.promotionId,
+            visible: product.visible,
+          },
+        });
+      } else {
+        throw new Error("product not found");
+      }
+    });
+    return NextResponse.json({ message: "success" });
+  }
 }
