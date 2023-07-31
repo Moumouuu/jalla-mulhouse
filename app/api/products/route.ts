@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
       // promo exist ?
       const p = await prisma.promotion.findFirst({
         where: {
-          id: promo.id,
+          id: Number(promo.id),
         },
       });
 
