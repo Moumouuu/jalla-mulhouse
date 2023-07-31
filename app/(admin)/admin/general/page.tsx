@@ -19,7 +19,7 @@ export default async function Page() {
       <Header />
       <div className="flex mt-5">
         <Sidebar />
-        <GeneralForm general={general} />
+        <GeneralForm />
       </div>
     </div>
   );

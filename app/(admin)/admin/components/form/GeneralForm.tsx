@@ -2,23 +2,32 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { General, Picture } from "@prisma/client";
+import { Picture } from "@prisma/client";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { AiOutlineClose } from "react-icons/ai";
 import HeaderTitle from "../HeaderTitle";
 
-interface GeneralFormProps {
-  general: General & {
-    carrousel: Picture[];
-  };
-}
-
-export default function GeneralForm({ general }: GeneralFormProps) {
+export default function GeneralForm() {
   const { register, handleSubmit } = useForm();
   const [files, setFile] = useState<any>([]);
+  const [general, setGeneral] = useState<any>();
+
+  const fetchData = async () => {
+    const res = await fetch("/api/general", {
+      method: "GET",
+    });
+    const data = await res.json();
+    console.log(data);
+    setGeneral(data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const fileToDataUri = (file: any) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -64,6 +73,10 @@ export default function GeneralForm({ general }: GeneralFormProps) {
       }
     );
   };
+
+  if (!general) {
+    return <div>loading ...</div>;
+  }
 
   return (
     <form

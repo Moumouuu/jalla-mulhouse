@@ -53,3 +53,15 @@ export async function DELETE(req: NextRequest) {
 
   return NextResponse.json({ message: "success" });
 }
+
+export async function GET() {
+  const general = await prisma.general.findFirst({
+    include: {
+      carrousel: true,
+    },
+  });
+
+  if (!general) throw new Error("Error getting general");
+
+  return NextResponse.json(general);
+}
