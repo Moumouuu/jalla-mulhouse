@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import ProductForm from "../components/form/ProductForm";
 
-export default async function page() {
+export default async function Page() {
   const promos = await getPromos();
   const products = await getProducts();
 

@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 
-export default async function getNewItems() {
+export default async function GetNewItems() {
   return await prisma.product.findMany({
     where: {
       new: true,

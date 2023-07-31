@@ -46,7 +46,7 @@ export default function ProductCard({ item }: ItemProps) {
       <div className="flex w-full p-2 m-2 justify-between">
         <div className="flex flex-col ">
           <p className={julius.className + " mb-3"}>
-            {item.title.substr(0, 10)}...
+            {item.title.substr(0, 20)}...
           </p>
           <div className="flex">
             {item.new ? (

@@ -13,7 +13,7 @@ interface CarouselProps {
   infiniteLoop?: boolean;
 }
 
-export function CarouselSlider({
+export default function CarouselSlider({
   images,
   showArrows = true,
   showIndicators = false,

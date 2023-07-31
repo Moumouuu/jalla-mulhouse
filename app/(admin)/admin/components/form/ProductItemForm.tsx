@@ -69,6 +69,7 @@ export default function ProductItemForm({
   const router = useRouter();
 
   const submitData = async (data: any) => {
+    const selectedMenuId = selectedMenu.split(" ")[0];
     toast.promise(
       fetch("/api/new", {
         method: "POST",
@@ -79,7 +80,7 @@ export default function ProductItemForm({
           id: product?.id,
           title: data.title,
           description: data.description,
-          menu: selectedMenu,
+          menuId: selectedMenuId,
 
           colors: colors,
           sizes: sizes,
@@ -234,8 +235,8 @@ export default function ProductItemForm({
             {menusList?.map((menu: any, index: any) => (
               <SelectItem
                 key={index}
-                value={menu.name}
-                defaultValue={product.menu}
+                value={menu.id + " " + menu.name}
+                defaultValue={product?.menu}
               >
                 {menu.name}
               </SelectItem>

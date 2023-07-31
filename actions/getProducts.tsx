@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 
-export default async function getProducts() {
+export default async function GetProducts() {
   return await prisma.product.findMany({
     include: {
       promotion: true,

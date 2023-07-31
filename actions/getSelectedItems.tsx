@@ -1,6 +1,6 @@
 import prisma from "../lib/prisma";
 
-export default async function getSelectedItems() {
+export default async function GetSelectedItems() {
   return await prisma.product.findMany({
     where: {
       selected: true,

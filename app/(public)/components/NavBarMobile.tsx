@@ -72,7 +72,7 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
                       <>
                         <Link
                           key={index}
-                          href={"/search?q=" + menu.name}
+                          href={"/search?q=" + menu.id}
                           className={"my-3 w-full bg-black/10"}
                         >
                           <p className="text-xl uppercase text-center">
@@ -83,7 +83,7 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
                           <>
                             <Link
                               key={index}
-                              href={"/search?q=" + subMenu.name}
+                              href={"/search?q=" + subMenu.id}
                               className={"my-2"}
                             >
                               <p className="text-lg uppercase underline underline-offset-2">
@@ -94,7 +94,7 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
                               (terMenu: any, index: any) => (
                                 <Link
                                   key={index}
-                                  href={"/search?q=" + terMenu.name}
+                                  href={"/search?q=" + terMenu.id}
                                   className={"my-2"}
                                 >
                                   <p className="text-lg text-gray-700 ml-4">

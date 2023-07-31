@@ -72,7 +72,11 @@ export default function NavBar({ menus, products }: NavBarProps) {
                 {filteredProducts
                   ?.splice(0, 5)
                   ?.map((product: any, index: any) => (
-                    <Link href={`/product/${product.id}`} key={index}>
+                    <Link
+                      href={`/product/${product.id}`}
+                      key={index}
+                      onClick={() => setSearch("")}
+                    >
                       <div className="flex flex-row items-center justify-between w-full p-2 hover:bg-gray-200">
                         <div className="flex flex-row items-center">
                           <Image
@@ -102,7 +106,7 @@ export default function NavBar({ menus, products }: NavBarProps) {
                 onMouseLeave={() => setHover(menu, false)}
               >
                 <Link
-                  href={"/search?q=" + menu.name}
+                  href={"/search?q=" + menu.id}
                   className={
                     menu.hover
                       ? "underline underline-offset-2 " + "m-4 text-xl "
@@ -117,23 +121,21 @@ export default function NavBar({ menus, products }: NavBarProps) {
                       <div key={index} className="flex flex-col items-center">
                         <Link
                           key={index}
-                          href={"/search?q=" + subMenu.name}
+                          href={"/search?q=" + subMenu.id}
                           className="mx-3 font-medium "
                         >
                           <p className="text-lg font-bold ">{subMenu.name}</p>
                         </Link>
                         {subMenu.terMenu?.map((terMenu: any, index: any) => (
-                          <>
-                            <Link
-                              key={index}
-                              href={"/search?q=" + terMenu.name}
-                              className="m-1 font-medium "
-                            >
-                              <p className="text-lg text-gray-700">
-                                {terMenu.name}
-                              </p>
-                            </Link>
-                          </>
+                          <Link
+                            key={index}
+                            href={"/search?q=" + terMenu.id}
+                            className="m-1 font-medium "
+                          >
+                            <p className="text-lg text-gray-700">
+                              {terMenu.name}
+                            </p>
+                          </Link>
                         ))}
                       </div>
                     ))}
@@ -145,16 +147,14 @@ export default function NavBar({ menus, products }: NavBarProps) {
 
         <div className="flex items-center">
           {socialNetworks.map((socialNetwork, index) => (
-            <>
-              <Link
-                key={index}
-                href={socialNetwork.url}
-                target="_blank"
-                className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 mx-2"
-              >
-                {socialNetwork.icons}
-              </Link>
-            </>
+            <Link
+              key={index}
+              href={socialNetwork.url}
+              target="_blank"
+              className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 mx-2"
+            >
+              {socialNetwork.icons}
+            </Link>
           ))}
         </div>
       </div>

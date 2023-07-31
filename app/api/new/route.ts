@@ -3,10 +3,10 @@ import { Color, Height } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { id, title, description, colors, sizes, images, product, menu } =
+  const { id, title, description, colors, sizes, images, product, menuId } =
     await req.json();
 
-  if (!title || !description || !menu) {
+  if (!title || !description || !menuId) {
     throw new Error("Title and description and menu are required");
   }
 
@@ -22,6 +22,12 @@ export async function POST(req: NextRequest) {
       height: size.height,
       price: Number(size.price),
     };
+  });
+
+  const menu = await prisma.menu.findUnique({
+    where: {
+      id: menuId,
+    },
   });
 
   const newProduct = await prisma.product.create({
@@ -42,7 +48,7 @@ export async function POST(req: NextRequest) {
       new: product?.new ?? true,
       selected: product?.selected ?? false,
       promotionId: product?.promotionId ?? null,
-      menu: menu,
+      menu: Number(menu),
     },
   });
 

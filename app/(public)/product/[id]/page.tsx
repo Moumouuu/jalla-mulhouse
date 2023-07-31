@@ -3,7 +3,7 @@ import getProducts from "@/actions/getProducts";
 import MoreProduct from "../../components/product/MoreProduct";
 import ProductPage from "../../components/product/ProductPage";
 
-export default async function page({ params }: any) {
+export default async function Page({ params }: any) {
   const product = await getProduct(params.id);
   const purposeProduct = await getProducts();
 
@@ -13,7 +13,7 @@ export default async function page({ params }: any) {
 
   return (
     <div className="mx-2">
-      <ProductPage product={product} />
+      <ProductPage item={product} />
       <MoreProduct purposeProduct={purposeProduct} />
     </div>
   );

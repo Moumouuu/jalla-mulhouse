@@ -10,14 +10,15 @@ import {
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { CarouselSlider } from "../home/Carousel";
+import CarouselSlider from "../home/Carousel";
 
 interface ProductPageProps {
-  product: any;
+  item: any;
 }
 
-export default function ProductPage({ product }: ProductPageProps) {
+export default function ProductPage({ item }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
+  const product = item[0];
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
@@ -42,21 +43,18 @@ export default function ProductPage({ product }: ProductPageProps) {
     if (height && product.promotion) {
       return height.price - (height.price * product?.promotion?.discount) / 100;
     }
-    return (
-      product.height[0]?.price -
-      (product.height[0]?.price * product?.promotion?.discount) / 100
-    );
+    return product.height[0].price;
   }, [heightSelected, product]);
 
   const priceByHeight = useCallback(() => {
-    const height = product.height.find(
+    const height = product.height?.find(
       (height: any) => height.id === heightSelected
     );
 
     if (height) {
       return height.price;
     }
-    return product.height[0]?.price;
+    return product.height[0].price;
   }, [heightSelected, product]);
 
   return (
@@ -88,7 +86,7 @@ export default function ProductPage({ product }: ProductPageProps) {
 
             <div className="flex flex-col my-6">
               <span className={julius.className}>
-                {product.colors.length} couleurs disponibles
+                {product.colors?.length} couleurs disponibles
               </span>
               <div className="w-full flex overflow-x-scroll mt-2">
                 {product.colors?.map((color: any, index: any) => (
