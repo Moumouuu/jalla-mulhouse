@@ -36,7 +36,7 @@ export default function Promo({ promo, promos, setPromos }: PromoProps) {
     setPromos((prev: any) => prev.filter((promo: any) => promo.id !== id));
 
     toast.promise(
-      fetch("/api/promo/", {
+      fetch("/api/promo", {
         method: "DELETE",
         body: JSON.stringify({ id: id }),
       }).then((res) => res.json()),

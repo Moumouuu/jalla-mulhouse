@@ -12,3 +12,9 @@ export async function DELETE(req: NextRequest) {
 
   return NextResponse.json({ message: "success" });
 }
+
+export async function GET() {
+  const promos = await prisma.promotion.findMany();
+
+  return NextResponse.json(promos);
+}
