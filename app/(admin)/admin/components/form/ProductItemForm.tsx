@@ -46,12 +46,13 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
   const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [menusList, setMenusList] = useState<any>([]);
   const [menus, setMenus] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   //fetch
   useEffect(() => {
     fetchData();
     formatMenuList();
-  }, []);
+  }, [loading]);
 
   //method
   const fetchData = async () => {
@@ -60,6 +61,7 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
     });
     const data = await res.json();
     setMenus(data);
+    setLoading(true);
   };
 
   const formatMenuList = () => {
