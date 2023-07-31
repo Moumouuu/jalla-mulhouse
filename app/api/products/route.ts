@@ -4,39 +4,62 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { promos, products } = await req.json();
 
-  //update promo if exists or create new promo
-  promos.forEach(async (promo: any) => {
-    //if promo.id doesnt exist in database -> new promo
-    const updatedPromo = await prisma.promotion.upsert({
-      where: { id: promo.id },
-      update: { ...promo, discount: Number(promo.discount) },
-      create: { ...promo, discount: Number(promo.discount) },
-    });
-    if (!updatedPromo) throw new Error("Promo not updated");
-  });
-
-  //update product if exists or create new product
-  products.forEach(async (product: any) => {
-    delete product.colors;
-    delete product.pictures;
-    delete product.height;
-
-    // add promotionId to product cheking with discount value because discount value is unique
+  if (promos) {
     promos.forEach(async (promo: any) => {
-      if (promo.discount == product.promotion) {
-        product.promotionId = promo.id;
+      const res = await prisma.promotion.upsert({
+        where: { id: promo.id },
+        update: {
+          name: promo.name,
+          discount: Number(promo.discount),
+          launchDay: promo.launchDay,
+          endDay: promo.endDay,
+        },
+        create: {
+          name: promo.name,
+          discount: Number(promo.discount),
+          launchDay: promo.launchDay,
+          endDay: promo.endDay,
+        },
+      });
+
+      if (!res) throw new Error("Error creating promo");
+    });
+  }
+
+  if (products) {
+    products.forEach(async (product: any) => {
+      let promotionId = null;
+      //find promotionId from discount
+      if (product.promotion) {
+        const promo = await prisma.promotion.findFirst({
+          where: {
+            discount: Number(product.promotion),
+          },
+        });
+        if (!promo) throw new Error("Error finding promo");
+        promotionId = promo.id;
       }
+      const res = await prisma.product.upsert({
+        where: { id: product.id },
+        update: {
+          new: product.new,
+          selected: product.selected,
+          promotionId: promotionId,
+          visible: product.visible,
+        },
+        // usually never happens
+        create: {
+          title: product.title,
+          description: product.description,
+          new: product.new,
+          selected: product.selected,
+          promotionId: product.promotionId,
+          visible: product.visible,
+        },
+      });
+      if (!res) throw new Error("Error creating product");
     });
-
-    delete product.promotion;
-
-    const updatedProduct = await prisma.product.update({
-      where: { id: product.id },
-      data: product,
-    });
-
-    if (!updatedProduct) throw new Error("Product not updated");
-  });
+  }
 
   return NextResponse.json({ message: "success" });
 }
@@ -55,10 +78,7 @@ export async function DELETE(req: NextRequest) {
 export async function GET() {
   const products = await prisma.product.findMany({
     include: {
-      colors: true,
       height: true,
-      pictures: true,
-      promotion: true,
     },
   });
 
