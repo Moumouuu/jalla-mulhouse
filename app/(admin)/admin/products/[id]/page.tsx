@@ -15,7 +15,7 @@ export default async function EditProductPage({ params }: any) {
       <Header />
       <div className="flex mt-5">
         <Sidebar />
-        <ProductItemForm product={product} menus={menus} />
+        <ProductItemForm productItem={product} menus={menus} />
       </div>
     </div>
   );

@@ -28,12 +28,12 @@ import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 import HeaderTitle from "../HeaderTitle";
 
 interface ProductItemFormProps {
-  product?: any;
+  productItem?: any;
   menus?: any;
 }
 
 export default function ProductItemForm({
-  product,
+  productItem,
   menus,
 }: ProductItemFormProps) {
   const {
@@ -41,10 +41,11 @@ export default function ProductItemForm({
     register,
     formState: { errors },
   } = useForm();
+  const product = productItem instanceof Array ? productItem[0] : productItem;
   const [files, setFile] = useState<any>(product?.pictures || []);
   const [colors, setColor] = useState<Color[]>(product?.colors || []);
   const [sizes, setSize] = useState<Height[]>(product?.height || []);
-  const [selectedMenu, setSelectedMenu] = useState<string>(product?.menu || "");
+  const [selectedMenu, setSelectedMenu] = useState<string>("");
   const [menusList, setMenusList] = useState<any>([]);
 
   const formatMenuList = () => {
@@ -69,7 +70,10 @@ export default function ProductItemForm({
   const router = useRouter();
 
   const submitData = async (data: any) => {
-    const selectedMenuId = selectedMenu.split(" ")[0];
+    let selectedMenuId: any;
+    if (selectedMenu) {
+      selectedMenuId = selectedMenu.split(" ")[0];
+    }
     toast.promise(
       fetch("/api/new", {
         method: "POST",
@@ -80,7 +84,7 @@ export default function ProductItemForm({
           id: product?.id,
           title: data.title,
           description: data.description,
-          menuId: selectedMenuId,
+          menuId: product?.menu ?? selectedMenuId,
 
           colors: colors,
           sizes: sizes,

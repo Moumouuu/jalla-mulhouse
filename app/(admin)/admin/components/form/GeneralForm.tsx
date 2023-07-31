@@ -19,7 +19,6 @@ interface GeneralFormProps {
 export default function GeneralForm({ general }: GeneralFormProps) {
   const { register, handleSubmit } = useForm();
   const [files, setFile] = useState<any>([]);
-
   const fileToDataUri = (file: any) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();

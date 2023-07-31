@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
   const { id, title, description, colors, sizes, images, product, menuId } =
     await req.json();
 
-  if (!title || !description || !menuId) {
+  if (!title || !description) {
     throw new Error("Title and description and menu are required");
   }
 
@@ -24,11 +24,15 @@ export async function POST(req: NextRequest) {
     };
   });
 
-  const menu = await prisma.menu.findUnique({
-    where: {
-      id: menuId,
-    },
-  });
+  let menu = null;
+
+  if (menuId) {
+    menu = await prisma.menu.findUnique({
+      where: {
+        id: Number(menuId),
+      },
+    });
+  }
 
   const newProduct = await prisma.product.create({
     data: {
@@ -48,7 +52,7 @@ export async function POST(req: NextRequest) {
       new: product?.new ?? true,
       selected: product?.selected ?? false,
       promotionId: product?.promotionId ?? null,
-      menu: Number(menu),
+      menu: menu?.id,
     },
   });
 
