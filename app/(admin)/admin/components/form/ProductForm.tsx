@@ -91,7 +91,6 @@ export default function ProductForm({ promotion }: ProductFormProps) {
     ]);
   };
 
-
   const submitData = () => {
     toast.promise(
       fetch("/api/products", {

@@ -6,23 +6,33 @@ export async function POST(req: NextRequest) {
 
   if (promos) {
     promos.forEach(async (promo: any) => {
-      const res = await prisma.promotion.upsert({
-        where: { id: promo.id },
-        update: {
-          name: promo.name,
-          discount: Number(promo.discount),
-          launchDay: promo.launchDay,
-          endDay: promo.endDay,
-        },
-        create: {
-          name: promo.name,
-          discount: Number(promo.discount),
-          launchDay: promo.launchDay,
-          endDay: promo.endDay,
+      // promo exist ?
+      const p = await prisma.promotion.findFirst({
+        where: {
+          id: promo.id,
         },
       });
 
-      if (!res) throw new Error("Error creating promo");
+      if (p) {
+        await prisma.promotion.update({
+          where: { id: promo.id },
+          data: {
+            name: promo.name,
+            discount: Number(promo.discount),
+            launchDay: promo.launchDay,
+            endDay: promo.endDay,
+          },
+        });
+      } else {
+        await prisma.promotion.create({
+          data: {
+            name: promo.name,
+            discount: Number(promo.discount),
+            launchDay: promo.launchDay,
+            endDay: promo.endDay,
+          },
+        });
+      }
     });
   }
 
@@ -39,25 +49,29 @@ export async function POST(req: NextRequest) {
         if (!promo) throw new Error("Error finding promo");
         promotionId = promo.id;
       }
-      const res = await prisma.product.upsert({
-        where: { id: product.id },
-        update: {
-          new: product.new,
-          selected: product.selected,
-          promotionId: promotionId,
-          visible: product.visible,
-        },
-        // usually never happens
-        create: {
-          title: product.title,
-          description: product.description,
-          new: product.new,
-          selected: product.selected,
-          promotionId: product.promotionId,
-          visible: product.visible,
+
+      // product exist ?
+      const p = await prisma.product.findFirst({
+        where: {
+          id: product.id,
         },
       });
-      if (!res) throw new Error("Error creating product");
+
+      // if product exist & promotionId is different
+      if (p) {
+        await prisma.product.update({
+          where: { id: product.id },
+          data: {
+            new: product.new,
+            selected: product.selected,
+            promotionId:
+              promotionId !== p.promotionId ? promotionId : p.promotionId,
+            visible: product.visible,
+          },
+        });
+      } else {
+        throw new Error("product not found");
+      }
     });
   }
 
@@ -79,6 +93,7 @@ export async function GET() {
   const products = await prisma.product.findMany({
     include: {
       height: true,
+      promotion: true,
     },
   });
 
