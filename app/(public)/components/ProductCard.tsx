@@ -1,17 +1,17 @@
 "use client";
 import { italiana, julius } from "@/utils/font";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ItemProps {
-  item: any;
+  itemProduct: any;
 }
 
-export default function ProductCard({ item }: ItemProps) {
+export default function ProductCard({ itemProduct }: ItemProps) {
+  const [item, setItem] = useState<any>(itemProduct);
   const calculatePromotion = (price: number, discount: number) => {
     return price - (price * discount) / 100;
   };
-
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
     const startDate = new Date(item.promotion?.startDate);
@@ -20,7 +20,12 @@ export default function ProductCard({ item }: ItemProps) {
     if (currentDate >= startDate && currentDate <= endDate) {
       return;
     }
-    item.promotion = null;
+    setItem((prev: any) => {
+      return {
+        ...prev,
+        promotion: null,
+      };
+    });
   };
 
   useEffect(() => {

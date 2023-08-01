@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Loader from "@/components/ui/loader";
 import {
   Select,
   SelectContent,
@@ -196,7 +197,7 @@ export default function MenuForm() {
   };
 
   if (!menus) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (

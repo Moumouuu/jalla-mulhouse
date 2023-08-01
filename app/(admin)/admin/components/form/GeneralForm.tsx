@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Loader from "@/components/ui/loader";
 import { Textarea } from "@/components/ui/textarea";
 import { Picture } from "@prisma/client";
 import Image from "next/image";
@@ -74,7 +75,7 @@ export default function GeneralForm() {
   };
 
   if (!general) {
-    return <div>loading ...</div>;
+    return <Loader />;
   }
 
   return (

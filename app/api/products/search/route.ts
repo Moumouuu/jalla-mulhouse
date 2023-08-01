@@ -77,10 +77,6 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  if (menus.length === 0) {
-    return new NextResponse(JSON.stringify([]));
-  }
-
   let products: any = [];
 
   // get all products
@@ -100,9 +96,5 @@ export async function POST(req: NextRequest) {
     products = [...products, ...menuProducts];
   }
 
-  if (products.length === 0) {
-    return new NextResponse(JSON.stringify([]));
-  }
-
-  return new NextResponse(JSON.stringify(products));
+  return new NextResponse(JSON.stringify({ products, menu }));
 }

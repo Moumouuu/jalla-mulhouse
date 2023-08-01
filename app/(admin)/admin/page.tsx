@@ -1,12 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Loader from "@/components/ui/loader";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Login() {
   const { register, handleSubmit, resetField } = useForm();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit: SubmitHandler<any> = (data) => {
     signIn("credentials", {
@@ -14,9 +17,13 @@ export default function Login() {
       password: data.password,
       callbackUrl: "/admin/general",
     });
+    setLoading(true);
+
     resetField("password");
     resetField("username");
   };
+
+  if (loading) return <Loader />;
 
   return (
     <div className="w-[100vw] h-[100vh] bg-dark relative">

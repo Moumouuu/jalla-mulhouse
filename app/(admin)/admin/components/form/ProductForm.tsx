@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import Loader from "@/components/ui/loader";
 import {
   Select,
   SelectContent,
@@ -120,7 +121,7 @@ export default function ProductForm({ promotion }: ProductFormProps) {
   };
 
   if (!productsList) {
-    return <div>Chargement...</div>;
+    return <Loader />;
   }
 
   return (

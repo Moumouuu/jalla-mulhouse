@@ -18,7 +18,7 @@ interface ProductPageProps {
 
 export default function ProductPage({ item }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
-  const product = item[0];
+  const [product, setProduct] = useState<any>(item[0]);
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
@@ -28,7 +28,12 @@ export default function ProductPage({ item }: ProductPageProps) {
     if (currentDate >= startDate && currentDate <= endDate) {
       return;
     }
-    product.promotion = null;
+    setProduct((prev: any) => {
+      return {
+        ...prev,
+        promotion: null,
+      };
+    });
   };
 
   useEffect(() => {
@@ -36,7 +41,7 @@ export default function ProductPage({ item }: ProductPageProps) {
   }, []);
 
   const calculatePromotion = useMemo(() => {
-    const height = product.height?.find(
+    const height = product?.height?.find(
       (height: any) => height.id === heightSelected
     );
 
@@ -74,18 +79,18 @@ export default function ProductPage({ item }: ProductPageProps) {
           </div>
           <div className="flex flex-col my-8">
             <h4
-              className={italiana.className + " text-xl lg:text-4xl uppercase"}
+              className={italiana.className + " text-4xl lg:text-4xl uppercase"}
             >
               {product.title}
             </h4>
             <span
-              className={julius.className + " text-sm lg:text-md text-gray-500"}
+              className={julius.className + " text-lg lg:text-md text-gray-500"}
             >
-              Jalla
+              {product.menu}
             </span>
 
             <div className="flex flex-col my-6">
-              <span className={julius.className}>
+              <span className={julius.className + " text-xl lg:text-2xl"}>
                 {product.colors?.length} couleurs disponibles
               </span>
               <div className="w-full flex overflow-x-scroll mt-2">
@@ -95,8 +100,8 @@ export default function ProductPage({ item }: ProductPageProps) {
               </div>
             </div>
 
-            <div className="flex flex-col my-6">
-              <span className={julius.className + " mb-2"}>
+            <div className="flex flex-col my-6 ">
+              <span className={julius.className + " mb-2 text-xl lg:text-2xl"}>
                 Tailles disponibles
               </span>
               <Select onValueChange={(e) => setHeightSelected(e)}>
@@ -118,13 +123,13 @@ export default function ProductPage({ item }: ProductPageProps) {
             <span
               className={
                 italiana.className +
-                (product.promotion ? " line-through" : " " + " lg:text-3xl")
+                (product.promotion ? " line-through" : " " + " text-3xl")
               }
             >
               {product.promotion ? calculatePromotion : priceByHeight()}€
             </span>
             {product.promotion && (
-              <span className={italiana.className + " lg:text-3xl"}>
+              <span className={italiana.className + " text-3xl"}>
                 {priceByHeight()} €
               </span>
             )}
@@ -132,12 +137,10 @@ export default function ProductPage({ item }: ProductPageProps) {
         </div>
 
         <div className="flex flex-col mt-3 lg:mt-10 mb-4 lg:mb-6">
-          <h3 className={italiana.className + " text-xl lg:text-3xl mb-3"}>
+          <h3 className={italiana.className + " text-2xl lg:text-3xl mb-3"}>
             Description du produit
           </h3>
-          <p className={julius.className + " text-md lg:text-lg"}>
-            {product.description}
-          </p>
+          <p className={julius.className + " text-lg"}>{product.description}</p>
         </div>
       </div>
     </div>

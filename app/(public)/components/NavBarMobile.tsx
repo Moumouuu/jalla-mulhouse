@@ -25,7 +25,11 @@ interface NavBarProps {
 export default function NavBarMobile({ menus, products }: NavBarProps) {
   const [search, setSearch] = useState<string>("");
   const filteredProducts = products.filter((product: any) => {
-    return product.title.toLowerCase().includes(search.toLowerCase());
+    // filtered with search & if product is visible
+    return (
+      product.title.toLowerCase().includes(search.toLowerCase()) &&
+      product.visible
+    );
   });
   const socialNetworks = [
     {
