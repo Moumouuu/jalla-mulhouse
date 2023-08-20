@@ -12,7 +12,7 @@ import { italiana } from "@/utils/font";
 import { Menu } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
@@ -24,6 +24,7 @@ interface NavBarProps {
 
 export default function NavBarMobile({ menus, products }: NavBarProps) {
   const [search, setSearch] = useState<string>("");
+  const [promoteMessage, setPromoteMessage] = useState<any>("");
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
     return (
@@ -45,7 +46,26 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
       icons: <AiOutlineMail size={20} />,
     },
   ];
+
+  useEffect(() => {
+    const getPromoteMessage = async () => {
+      const res = await fetch("/api/general", {
+        method: "GET",
+      });
+      const general = await res.json();
+      if(!general) {return}
+      
+      setPromoteMessage(general?.promoteMessage);
+    }
+    getPromoteMessage();
+  }, []);
   return (
+    <>
+    {promoteMessage && (
+      <div className="w-full bg-white p-2 text-black text-center text-md border-b-2 ">
+      <p className={italiana.className}>{promoteMessage}</p>
+    </div>
+    )}
     <div
       className={
         "flex text-white bg-white p-3 w-full items-center justify-between overflow-y-scroll" +
@@ -133,6 +153,7 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
           </SheetContent>
         </Sheet>
 
+        
         <div className="flex items-center ">
           <Link href={"/"}>
             <Image
@@ -144,7 +165,6 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
           </Link>
         </div>
       </div>
-
       <div className="flex items-center relative">
         <input
           onChange={(e) => setSearch(e.target.value)}
@@ -178,7 +198,10 @@ export default function NavBarMobile({ menus, products }: NavBarProps) {
             ))}
           </div>
         )}
+
       </div>
+    
     </div>
+    </>
   );
 }

@@ -3,7 +3,7 @@ import { italiana } from "@/utils/font";
 import { Menu } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
@@ -16,6 +16,7 @@ interface NavBarProps {
 export default function NavBar({ menus, products }: NavBarProps) {
   const [menusList, setMenusList] = useState<Menu[]>(menus);
   const [search, setSearch] = useState<string>("");
+  const [promoteMessage, setPromoteMessage] = useState<any>("");
 
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
@@ -51,7 +52,27 @@ export default function NavBar({ menus, products }: NavBarProps) {
     setMenusList(newMenu);
   };
 
+  useEffect(() => {
+    const getPromoteMessage = async () => {
+      const res = await fetch("/api/general", {
+        method: "GET",
+      });
+      const general = await res.json();
+
+      if(!general) {return}
+      
+      setPromoteMessage(general?.promoteMessage);
+    }
+    getPromoteMessage();
+  }, []);
+
   return (
+    <>
+     {promoteMessage && (
+            <div className="w-full bg-white p-2 text-center text-md border-b-2 ">
+            <p className={italiana.className}>{promoteMessage}</p>
+          </div>
+          )}
     <div className={`bg-white p-3 w-[100vw] ` + italiana.className}>
       <div className="flex items-start justify-between">
         <Link href={"/"}>
@@ -164,5 +185,6 @@ export default function NavBar({ menus, products }: NavBarProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

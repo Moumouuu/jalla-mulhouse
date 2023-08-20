@@ -1,5 +1,3 @@
-import getGeneral from "@/actions/getGeneral";
-import { italiana } from "@/utils/font";
 import "../globals.css";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -14,15 +12,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const general = await getGeneral();
 
   return (
     <html lang="fr">
       <body>
-        <div className="flex flex-col">
-          <div className="w-full bg-white p-2 text-center text-md border-b-2 ">
-            <p className={italiana.className}>{general?.promoteMessage}</p>
-          </div>
+        <div className="flex flex-col">      
           <Header />
           {children}
           <Footer />

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import CarouselSlider from "../home/Carousel";
+import CarouselSlider from "../home/CarouselSlider";
 
 interface ProductPageProps {
   item: any;
