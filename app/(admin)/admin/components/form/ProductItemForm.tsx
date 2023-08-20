@@ -87,6 +87,7 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
     if (selectedMenu) {
       selectedMenuId = selectedMenu.split(" ")[0];
     }
+
     toast.promise(
       fetch("/api/new", {
         method: "POST",

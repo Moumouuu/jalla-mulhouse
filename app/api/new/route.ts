@@ -24,15 +24,6 @@ export async function POST(req: NextRequest) {
     };
   });
 
-  let menu = null;
-
-  if (menuId) {
-    menu = await prisma.menu.findUnique({
-      where: {
-        id: Number(menuId),
-      },
-    });
-  }
 
   const newProduct = await prisma.product.create({
     data: {
@@ -52,7 +43,7 @@ export async function POST(req: NextRequest) {
       new: product?.new ?? true,
       selected: product?.selected ?? false,
       promotionId: product?.promotionId ?? null,
-      menu: menu?.id,
+      menu: menuId,
     },
   });
 

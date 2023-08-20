@@ -9,17 +9,20 @@ interface ItemProps {
 
 export default function ProductCard({ itemProduct }: ItemProps) {
   const [item, setItem] = useState<any>(itemProduct);
+  console.log(item);
   const calculatePromotion = (price: number, discount: number) => {
     return price - (price * discount) / 100;
   };
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
-    const startDate = new Date(item.promotion?.startDate);
-    const endDate = new Date(item.promotion?.endDate);
+    const startDate = new Date(item.promotion?.launchDay);
+    const endDate = new Date(item.promotion?.endDay);
 
-    if (currentDate >= startDate && currentDate <= endDate) {
+    // already available
+    if (currentDate > startDate && currentDate < endDate) {
       return;
     }
+
     setItem((prev: any) => {
       return {
         ...prev,

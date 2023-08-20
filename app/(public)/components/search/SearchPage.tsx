@@ -12,7 +12,7 @@ import {
 import { italiana, julius } from "@/utils/font";
 import { Product } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ProductCard from "../ProductCard";
 
 export default function SearchPage() {
@@ -37,9 +37,18 @@ export default function SearchPage() {
       setLoading(false);
     };
     getProducts();
+    fetchMenu();
   }, [menuId]);
 
   //functions
+
+  const fetchMenu = useCallback(async () => {
+    const res = await fetch(`/api/menu?id=${menuId}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setMenuName(data.name);
+  }, [menuId]);
 
   const orderProduct = (e: any) => {
     switch (e) {
@@ -85,7 +94,7 @@ export default function SearchPage() {
               italiana.className + " text-xl lg:text-3xl text-white uppercase"
             }
           >
-            {menuId}
+            {menuName}
           </h3>
           <span
             className={julius.className + " text-sm lg:text-md text-gray-500 "}

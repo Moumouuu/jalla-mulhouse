@@ -19,13 +19,14 @@ interface ProductPageProps {
 export default function ProductPage({ item }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
   const [product, setProduct] = useState<any>(item[0]);
+  const [menu, setMenu] = useState<any>("");
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
-    const startDate = new Date(product.promotion?.startDate);
-    const endDate = new Date(product.promotion?.endDate);
+    const startDate = new Date(product.promotion?.launchDay);
+    const endDate = new Date(product.promotion?.endDay);
 
-    if (currentDate >= startDate && currentDate <= endDate) {
+    if (currentDate > startDate && currentDate < endDate) {
       return;
     }
     setProduct((prev: any) => {
@@ -36,8 +37,17 @@ export default function ProductPage({ item }: ProductPageProps) {
     });
   };
 
+  const fetchMenu = useCallback(async () => {
+    const res = await fetch(`/api/menu?id=${product.menu}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setMenu(data.name);
+  }, [product.menu]);
+
   useEffect(() => {
     promoAlreadyAvailable();
+    fetchMenu();
   }, []);
 
   const calculatePromotion = useMemo(() => {
@@ -86,7 +96,7 @@ export default function ProductPage({ item }: ProductPageProps) {
             <span
               className={julius.className + " text-lg lg:text-md text-gray-500"}
             >
-              {product.menu}
+              {menu}
             </span>
 
             <div className="flex flex-col my-6">
@@ -126,11 +136,11 @@ export default function ProductPage({ item }: ProductPageProps) {
                 (product.promotion ? " line-through" : " " + " text-3xl")
               }
             >
-              {product.promotion ? calculatePromotion : priceByHeight()}€
+              {product.promotion && priceByHeight()}€
             </span>
             {product.promotion && (
               <span className={italiana.className + " text-3xl"}>
-                {priceByHeight()} €
+                {calculatePromotion} €
               </span>
             )}
           </div>

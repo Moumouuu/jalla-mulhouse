@@ -126,7 +126,30 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.json({ message: "success" });
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("id");
+
+  if (id) {
+    let menu;
+    menu = await prisma.menu.findUnique({
+      where: { id: Number(id) },
+    });
+    if (!menu) {
+      menu = await prisma.subMenu.findUnique({
+        where: { id: Number(id) },
+      });
+    }
+    if (!menu) {
+      menu = await prisma.terMenu.findUnique({
+        where: { id: Number(id) },
+      });
+    }
+    if (!menu) {
+      throw new Error("Invalid get menu ");
+    }
+    return NextResponse.json(menu);
+  }
+
   const menuList = await prisma.menu.findMany({
     include: {
       subMenu: {
