@@ -55,11 +55,15 @@ export default function Footer() {
           </span>
           <div className="flex items-center">
             <MdPlace size={25} />
-            <p>Du lundi au vendredi : 10h - 12h / 14h - 18h45</p>
+            <p>Le lundi : 14h - 18h</p>
+          </div>
+          <div className="flex items-center">
+            <MdPlace size={25} />
+            <p>Les autres jours : 10h - 12h / 14h - 18h30</p>
           </div>
           <div className="flex items-center my-2">
             <MdPlace size={25} />
-            <p>le samedi uniquement : 10h - 12h / 14h - 18h30</p>
+            <p>le samedi : 10h - 18h30h</p>
           </div>
         </div>
         <div className="flex items-center mt-6">
