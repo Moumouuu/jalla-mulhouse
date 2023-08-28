@@ -1,16 +1,48 @@
 "use client";
 
 import { italiana } from "@/utils/font";
-import { Product } from "@prisma/client";
+import { useEffect, useState } from "react";
 import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
-  items: Product[];
   label: string;
+  newItems?: any;
+  selectedItems?: any;
 }
 
-export default function ItemsSlider({ items, label }: ItemsSliderProps) {
-  if (items.length === 0) {
+export default function ItemsSlider({
+  label,
+  newItems,
+  selectedItems,
+}: ItemsSliderProps) {
+  const [products, setProducts] = useState<any>([]);
+
+  const getNewItems = async () => {
+    const res = await fetch("/api/products/new", {
+      method: "GET",
+    });
+    const items = await res.json();
+    setProducts(items.res);
+  };
+
+  const getSelectedItems = async () => {
+    const res = await fetch("/api/products/selected", {
+      method: "GET",
+    });
+    const items = await res.json();
+    setProducts(items.res);
+  };
+
+  useEffect(() => {
+    if (newItems) {
+      getNewItems();
+    }
+    if (selectedItems) {
+      getSelectedItems();
+    }
+  }, []);
+
+  if (products.length === 0) {
     return null;
   }
 
@@ -25,7 +57,7 @@ export default function ItemsSlider({ items, label }: ItemsSliderProps) {
         {label}
       </h2>
       <div className="w-full grid  grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
-        {items?.map((item: any, index: any) => (
+        {products?.map((item: any, index: any) => (
           <ProductCard key={index} itemProduct={item} />
         ))}
       </div>
