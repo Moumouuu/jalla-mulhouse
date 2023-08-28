@@ -1,11 +1,28 @@
 "use client";
 
+import Loader from "@/components/ui/loader";
 import { italiana, julius } from "@/utils/font";
-interface AboutProps {
-  general: any;
-}
+import { useEffect, useState } from "react";
 
-export default function About({ general }: AboutProps) {
+export default function About() {
+  const [general, setGeneral] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getGeneral = async () => {
+      setIsLoading(true);
+      const res = await fetch("/api/general", {
+        method: "GET",
+      });
+      const general = await res.json();
+      setGeneral(general);
+      setIsLoading(false);
+    };
+    getGeneral();
+  }, []);
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className="text-center text-white mt-24 lg:mt-40 mx-3 ">
       <h1 className={italiana.className + " text-xl lg:text-3xl my-4"}>

@@ -1,6 +1,5 @@
 "use client";
 
-import { format } from "date-fns";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { format, parseISO } from "date-fns";
 
 interface DatePickerProps {
   date: Date;
@@ -18,6 +18,28 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ date, setDate }: DatePickerProps) {
+  console.log(typeof date);
+
+  //format date like this : 2023-08-23T22:00:00.000Z but not for date like this : 2023-07-29T22:00:00.000Z
+  const formatDate = (date: Date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    let monthString = month.toString();
+    let dayString = day.toString();
+
+    if (month < 10) {
+      monthString = "0" + monthString;
+    }
+
+    if (day < 10) {
+      dayString = "0" + dayString;
+    }
+
+    return year + "-" + monthString + "-" + dayString + "T22:00:00.000Z";
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -29,7 +51,11 @@ export function DatePicker({ date, setDate }: DatePickerProps) {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Choisir une date</span>}
+          {typeof date === "string" ? (
+            <span>{format(parseISO(date), "PPP")}</span>
+          ) : (
+            <span>{format(parseISO(formatDate(date)), "PPP")}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

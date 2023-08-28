@@ -5,10 +5,16 @@ export async function DELETE(req: NextRequest) {
   const { id } = await req.json();
   if (!id) throw new Error("Invalid id");
 
-  const deletedPromo = await prisma.promotion.delete({
+  const promo = await prisma.promotion.findUnique({
     where: { id },
   });
-  if (!deletedPromo) throw new Error("Promo not deleted");
+
+  if (promo) {
+    const deletedPromo = await prisma.promotion.delete({
+      where: { id },
+    });
+    if (!deletedPromo) throw new Error("Promo not deleted");
+  }
 
   return NextResponse.json({ message: "success" });
 }

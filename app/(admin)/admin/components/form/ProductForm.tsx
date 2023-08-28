@@ -38,13 +38,9 @@ import { ImBin } from "react-icons/im";
 import HeaderTitle from "../HeaderTitle";
 import Promo from "../inputs/Promo";
 
-interface ProductFormProps {
-  promotion: Promotion[];
-}
-
-export default function ProductForm({ promotion }: ProductFormProps) {
+export default function ProductForm() {
   //var
-  const [promos, setPromos] = useState<Promotion[]>(promotion);
+  const [promos, setPromos] = useState<Promotion[]>([]);
   const [productsList, setProductList] = useState<Product[]>();
   const router = useRouter();
   const { handleSubmit } = useForm();
@@ -62,6 +58,12 @@ export default function ProductForm({ promotion }: ProductFormProps) {
     });
     const data = await res.json();
     setProductList(data.products);
+
+    const resPromo = await fetch("/api/promo", {
+      method: "GET",
+    });
+    const dataPromo = await resPromo.json();
+    setPromos(dataPromo);
   };
 
   const addPromotion = (e: any) => {
@@ -120,7 +122,7 @@ export default function ProductForm({ promotion }: ProductFormProps) {
     );
   };
 
-  if (!productsList) {
+  if (!productsList || !promos) {
     return <Loader />;
   }
 
@@ -140,7 +142,7 @@ export default function ProductForm({ promotion }: ProductFormProps) {
       />
 
       <div className="flex flex-col">
-        {promos.map((promo, i) => (
+        {promos?.map((promo, i) => (
           <Promo key={i} promo={promo} promos={promos} setPromos={setPromos} />
         ))}
       </div>

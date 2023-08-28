@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-col mx-5">
-          <span className="underline text-md lg:text-xl uppercase mt-4">
+          <span className="underline text-md lg:text-xl uppercase my-4">
             Horaires
           </span>
           <div className="flex items-center">

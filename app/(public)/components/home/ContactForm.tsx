@@ -7,21 +7,15 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export default function ContactForm() {
-  const { handleSubmit, register } = useForm();
+  const { handleSubmit, register, reset } = useForm();
 
   const sendEmail = async (data: any) => {
-    console.log(data);
-    toast.promise(
-      fetch("/api/send", {
-        method: "POST",
-        body: JSON.stringify({ ...data }),
-      }).then((res) => res.json()),
-      {
-        loading: "Envoie en cours ...",
-        success: "Envoyé !",
-        error: "Une erreur est survenue",
-      }
-    );
+    fetch("/api/send", {
+      method: "POST",
+      body: JSON.stringify({ ...data }),
+    }).then((res) => res.json()),
+      reset();
+    toast.success("Votre message a bien été envoyé");
   };
   return (
     <div className="flex flex-col justify-center items-center">
@@ -40,7 +34,7 @@ export default function ContactForm() {
             <label className={julius.className}>Nom</label>
             <Input
               placeholder="Entrez votre nom..."
-              {...register("name")}
+              {...register("lastName")}
               type="text"
             />
           </div>
@@ -48,7 +42,7 @@ export default function ContactForm() {
             <label className={julius.className}>Prénom</label>
             <Input
               placeholder="Entrez votre prénom..."
-              {...register("firstname")}
+              {...register("firstName")}
               type="text"
             />
           </div>

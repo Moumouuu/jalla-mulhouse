@@ -9,7 +9,6 @@ interface ItemProps {
 
 export default function ProductCard({ itemProduct }: ItemProps) {
   const [item, setItem] = useState<any>(itemProduct);
-  console.log(item);
   const calculatePromotion = (price: number, discount: number) => {
     return price - (price * discount) / 100;
   };
