@@ -5,7 +5,6 @@ import Sidebar from "../components/Sidebar";
 import ProductForm from "../components/form/ProductForm";
 
 export default async function Page() {
-  const promos = await getPromos();
 
   return (
     <div className="bg-dark w-[100vw] text-white p-3 md:p-5">
@@ -13,7 +12,7 @@ export default async function Page() {
       <Header />
       <div className="flex mt-5">
         <Sidebar />
-        <ProductForm promotion={promos} />
+        <ProductForm />
       </div>
     </div>
   );
