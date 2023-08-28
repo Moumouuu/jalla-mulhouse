@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
       new: product?.new ?? true,
       selected: product?.selected ?? false,
       promotionId: product?.promotionId ?? null,
-      menu: menuId,
+      menu: Number(menuId),
     },
   });
 
