@@ -1,23 +1,19 @@
 "use client";
 
 import { italiana } from "@/utils/font";
-import { useEffect, useState } from "react";
+import { Product } from "@prisma/client";
+import { useState } from "react";
 import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
   label: string;
-  newItems?: boolean;
-  selectedItems?: boolean;
+  items?: Product[];
 }
 
-export default function ItemsSlider({
-  label,
-  newItems,
-  selectedItems,
-}: ItemsSliderProps) {
-  const [products, setProducts] = useState<any>([]);
+export default function ItemsSlider({ label, items }: ItemsSliderProps) {
+  const [products, setProducts] = useState<any>(items);
 
-  const getNewItems = async () => {
+  /*const getNewItems = async () => {
     const res = await fetch("/api/products/new", {
       method: "GET",
       cache: "no-store",
@@ -45,6 +41,7 @@ export default function ItemsSlider({
       getSelectedItems();
     }
   }, []);
+  */
 
   if (products.length === 0) {
     return null;
