@@ -136,7 +136,7 @@ export default function ProductPage({ item }: ProductPageProps) {
                 (product.promotion ? " line-through" : " " + " text-3xl")
               }
             >
-              {product.promotion && priceByHeight()}€
+              {priceByHeight()}€
             </span>
             {product.promotion && (
               <span className={italiana.className + " text-3xl"}>

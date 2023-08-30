@@ -40,11 +40,11 @@ export default function Footer() {
           <span className="underline text-md lg:text-xl uppercase my-4">
             A propos
           </span>
-          <div className="flex items-center">
+          <div className="flex items-center my-1">
             <MdPlace size={25} />
             <p>18 et 20 RUE DES FLEURS 68100 MULHOUSE</p>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center my-1">
             <AiOutlineClockCircle size={25} />
             <p>03 89 66 74 56</p>
           </div>
@@ -53,20 +53,20 @@ export default function Footer() {
           <span className="underline text-md lg:text-xl uppercase my-4">
             Horaires
           </span>
-          <div className="flex items-center">
+          <div className="flex items-center my-1">
             <MdPlace size={25} />
             <p>Le lundi : 14h - 18h</p>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center my-1">
             <MdPlace size={25} />
             <p>Les autres jours : 10h - 12h / 14h - 18h30</p>
           </div>
-          <div className="flex items-center my-2">
+          <div className="flex items-center my-1">
             <MdPlace size={25} />
             <p>le samedi : 10h - 18h30h</p>
           </div>
         </div>
-        <div className="flex items-center mt-6">
+        <div className="flex items-center mt-6 lg:mt-0 ">
           {socialNetworks.map((socialNetwork, index) => (
             <>
               <Link
@@ -81,21 +81,23 @@ export default function Footer() {
           ))}
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row justify-between px-3 w-full bg-white">
-        <p className={italiana.className + " text-sm my-2"}>
-          Website designed & developed by{" "}
-          <Link
-            href="https://pluviaux.fr"
-            className={
-              julius.className + " text-md underline underline-offset-2"
-            }
-          >
-            Robin Pluviaux
-          </Link>
-        </p>
-        <p className={italiana.className + " text-sm my-2"}>
-          Copyright © 2023 - All right reserved by Jalla mulhouse
-        </p>
+      <div className="px-3 w-full bg-white">
+        <div className="flex flex-col lg:flex-row justify-between">
+          <p className={italiana.className + " text-sm my-2"}>
+            Website designed & developed by{" "}
+            <Link
+              href="https://pluviaux.fr"
+              className={
+                julius.className + " text-md underline underline-offset-2"
+              }
+            >
+              Robin Pluviaux
+            </Link>
+          </p>
+          <p className={italiana.className + " text-sm my-2"}>
+            Copyright © 2023 - All right reserved by Jalla mulhouse
+          </p>
+        </div>
         <Link
           href={"/admin"}
           className={italiana.className + " underline underline-offset-2 my-2"}
