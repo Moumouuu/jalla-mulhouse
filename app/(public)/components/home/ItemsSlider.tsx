@@ -20,7 +20,7 @@ export default function ItemsSlider({
   const getNewItems = async () => {
     const res = await fetch("/api/products/new", {
       method: "GET",
-      cache: "no-cache",
+      cache: "no-store",
     });
     const items = await res.json();
     setProducts(items);
@@ -30,7 +30,7 @@ export default function ItemsSlider({
   const getSelectedItems = async () => {
     const res = await fetch("/api/products/selected", {
       method: "GET",
-      cache: "no-cache",
+      cache: "no-store",
     });
     const items = await res.json();
     setProducts(items);
