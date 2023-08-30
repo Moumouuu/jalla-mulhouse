@@ -23,6 +23,7 @@ export default function ItemsSlider({
     });
     const items = await res.json();
     setProducts(items.res);
+    console.log(items)
   };
 
   const getSelectedItems = async () => {
@@ -31,6 +32,7 @@ export default function ItemsSlider({
     });
     const items = await res.json();
     setProducts(items.res);
+    console.log(items)
   };
 
   useEffect(() => {
