@@ -1,11 +1,9 @@
-import getPromos from "@/actions/getPromos";
 import { Toaster } from "react-hot-toast";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import ProductForm from "../components/form/ProductForm";
 
 export default async function Page() {
-
   return (
     <div className="bg-dark w-[100vw] text-white p-3 md:p-5">
       <Toaster />

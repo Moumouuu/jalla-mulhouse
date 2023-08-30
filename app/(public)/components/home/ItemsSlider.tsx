@@ -11,36 +11,6 @@ interface ItemsSliderProps {
 }
 
 export default function ItemsSlider({ label, items }: ItemsSliderProps) {
-  console.log(items);
-  /*const getNewItems = async () => {
-    const res = await fetch("/api/products/new", {
-      method: "GET",
-      cache: "no-store",
-    });
-    const items = await res.json();
-    setProducts(items);
-    console.log(items)
-  };
-
-  const getSelectedItems = async () => {
-    const res = await fetch("/api/products/selected", {
-      method: "GET",
-      cache: "no-store",
-    });
-    const items = await res.json();
-    setProducts(items);
-    console.log(items)
-  };
-
-  useEffect(() => {
-    if (newItems) {
-      getNewItems();
-    }
-    if (selectedItems) {
-      getSelectedItems();
-    }
-  }, []);
-  */
 
   if (items?.length === 0) {
     return null;
