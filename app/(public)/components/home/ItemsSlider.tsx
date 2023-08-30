@@ -6,8 +6,8 @@ import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
   label: string;
-  newItems?: any;
-  selectedItems?: any;
+  newItems?: boolean;
+  selectedItems?: boolean;
 }
 
 export default function ItemsSlider({
@@ -56,7 +56,7 @@ export default function ItemsSlider({
       >
         {label}
       </h2>
-      <div className="w-full grid  grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
+      <div className="w-full grid grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
         {products?.map((item: any, index: any) => (
           <ProductCard key={index} itemProduct={item} />
         ))}

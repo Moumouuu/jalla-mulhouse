@@ -53,7 +53,7 @@ export default function SearchPage() {
   const orderProduct = (e: any) => {
     switch (e) {
       case "1":
-        //order ASC price
+        //sorting with price ASC
         setProducts(
           products.sort((a: any, b: any) => {
             return a.height[0].price - b.height[0].price;
