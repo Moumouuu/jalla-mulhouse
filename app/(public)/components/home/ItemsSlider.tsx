@@ -7,12 +7,11 @@ import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
   label: string;
-  items?: Product[];
+  items: Product[];
 }
 
 export default function ItemsSlider({ label, items }: ItemsSliderProps) {
-  const [products, setProducts] = useState<any>(items);
-
+  console.log(items);
   /*const getNewItems = async () => {
     const res = await fetch("/api/products/new", {
       method: "GET",
@@ -43,7 +42,7 @@ export default function ItemsSlider({ label, items }: ItemsSliderProps) {
   }, []);
   */
 
-  if (products.length === 0) {
+  if (items?.length === 0) {
     return null;
   }
 
@@ -58,7 +57,7 @@ export default function ItemsSlider({ label, items }: ItemsSliderProps) {
         {label}
       </h2>
       <div className="w-full grid grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
-        {products?.map((item: any, index: any) => (
+        {items?.map((item: any, index: any) => (
           <ProductCard key={index} itemProduct={item} />
         ))}
       </div>
