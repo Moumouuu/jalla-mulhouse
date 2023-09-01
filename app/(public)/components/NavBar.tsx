@@ -9,14 +9,24 @@ import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 
 interface NavBarProps {
-  menus: Menu[];
   products: any;
 }
 
-export default function NavBar({ menus, products }: NavBarProps) {
-  const [menusList, setMenusList] = useState<Menu[]>(menus);
+export default function NavBar({ products }: NavBarProps) {
+  const [menusList, setMenusList] = useState<Menu[]>([]);
   const [search, setSearch] = useState<string>("");
   const [promoteMessage, setPromoteMessage] = useState<any>("");
+
+  useEffect(() => {
+    const getMenus = async () => {
+      const res = await fetch("/api/menu/all", {
+        method: "GET",
+      });
+      const menus = await res.json();
+      setMenusList(menus);
+    };
+    getMenus();
+  }, []);
 
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
