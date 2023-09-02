@@ -98,7 +98,7 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
           id: product?.id,
           title: data.title,
           description: data.description,
-          menuId: product?.menu ?? selectedMenuId,
+          menuId: selectedMenuId ?? product?.menu,
 
           colors: colors,
           sizes: sizes,

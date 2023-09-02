@@ -17,14 +17,12 @@ import { AiOutlineMail } from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 
-interface NavBarProps {
-  products: any;
-}
-
-export default function NavBarMobile({ products }: NavBarProps) {
+export default function NavBarMobile() {
   const [search, setSearch] = useState<string>("");
   const [promoteMessage, setPromoteMessage] = useState<any>("");
   const [menus, setMenusList] = useState<Menu[]>([]);
+  const [products, setProducts] = useState<any>([]);
+
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
     return (
@@ -50,6 +48,7 @@ export default function NavBarMobile({ products }: NavBarProps) {
   useEffect(() => {
     getPromoteMessage();
     getMenus();
+    getProducts();
   }, []);
 
   const getPromoteMessage = async () => {
@@ -71,6 +70,13 @@ export default function NavBarMobile({ products }: NavBarProps) {
     setMenusList(menus);
   };
 
+  const getProducts = async () => {
+    const res = await fetch("/api/products/search", {
+      method: "GET",
+    });
+    const products = await res.json();
+    setProducts(products);
+  };
   return (
     <>
       {promoteMessage && (

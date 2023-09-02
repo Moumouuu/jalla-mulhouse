@@ -19,28 +19,27 @@ export default function SearchPage() {
   //var
   const searchParams = useSearchParams();
   const menuId = searchParams?.get("q");
-  const [products, setProducts] = useState<[]>([]);
+  const [products, setProducts] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [menuName, setMenuName] = useState<string>("");
-
   //fetch
   useEffect(() => {
-    const getProducts = async () => {
-      setLoading(true);
-      const res = await fetch("api/products/search", {
-        method: "POST",
-        body: JSON.stringify({ menuId }),
-      }).then((res) => res.json());
-      const data = await res;
-      setProducts(data.products);
-      setMenuName(data.menu.name);
-      setLoading(false);
-    };
     getProducts();
     fetchMenu();
   }, [menuId]);
 
   //functions
+  const getProducts = async () => {
+    setLoading(true);
+    const res = await fetch("api/products/search", {
+      method: "POST",
+      body: JSON.stringify({ menuId }),
+    }).then((res) => res.json());
+    const data = await res;
+    setProducts(data.products);
+    setMenuName(data.menu.name);
+    setLoading(false);
+  };
 
   const fetchMenu = useCallback(async () => {
     const res = await fetch(`/api/menu?id=${menuId}`, {
@@ -51,32 +50,27 @@ export default function SearchPage() {
   }, [menuId]);
 
   const orderProduct = (e: any) => {
+    console.log(products);
     switch (e) {
       case "1":
-        //sorting with price ASC
-        setProducts(
-          products.sort((a: any, b: any) => {
-            return a.height[0].price - b.height[0].price;
-          })
-        );
+        //order ASC price
+        setProducts([
+          ...products.sort(
+            (a: any, b: any) => a.height[0].price - b.height[0].price
+          ),
+        ]);
         break;
       case "2":
         //order DESC price
-        setProducts(
-          products.sort((a: any, b: any) => {
-            return b.height[0].price - a.height[0].price;
-          })
-        );
+        setProducts([
+          ...products.sort(
+            (a: any, b: any) => b.height[0].price - a.height[0].price
+          ),
+        ]);
         break;
       case "3":
         //order DESC date
-        setProducts(
-          products.sort((a: any, b: any) => {
-            return (
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            );
-          })
-        );
+        setProducts([...products.sort((a: any, b: any) => b.id - a.id)]);
         break;
       default:
         break;
@@ -129,8 +123,8 @@ export default function SearchPage() {
 
       <div className="text-black grid justify-items-center my-5 lg:my-8 gap-3 md:gap-5 lg:gap-10 grid-cols-1 md:grid-cols-3 ">
         {products.length > 0 &&
-          products.map((product: Product, index: any) => (
-            <ProductCard itemProduct={product} key={index} />
+          products.map((product: Product) => (
+            <ProductCard itemProduct={product} key={product.id} />
           ))}
       </div>
     </div>

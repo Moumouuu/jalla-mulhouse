@@ -8,25 +8,32 @@ import { AiOutlineMail } from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 
-interface NavBarProps {
-  products: any;
-}
-
-export default function NavBar({ products }: NavBarProps) {
+export default function NavBar() {
   const [menusList, setMenusList] = useState<Menu[]>([]);
   const [search, setSearch] = useState<string>("");
   const [promoteMessage, setPromoteMessage] = useState<any>("");
+  const [products, setProducts] = useState<any>([]);
 
   useEffect(() => {
-    const getMenus = async () => {
-      const res = await fetch("/api/menu/all", {
-        method: "GET",
-      });
-      const menus = await res.json();
-      setMenusList(menus);
-    };
     getMenus();
+    getProducts();
   }, []);
+
+  const getMenus = async () => {
+    const res = await fetch("/api/menu/all", {
+      method: "GET",
+    });
+    const menus = await res.json();
+    setMenusList(menus);
+  };
+
+  const getProducts = async () => {
+    const res = await fetch("/api/products/search", {
+      method: "GET",
+    });
+    const products = await res.json();
+    setProducts(products);
+  };
 
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible

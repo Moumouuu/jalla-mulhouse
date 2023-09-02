@@ -92,9 +92,25 @@ export async function POST(req: NextRequest) {
         colors: true,
         height: true,
       },
+      orderBy: {
+        id: "desc",
+      },
     });
     products = [...products, ...menuProducts];
   }
 
   return new NextResponse(JSON.stringify({ products, menu }));
+}
+
+export async function GET() {
+  const p = await prisma.product.findMany({
+    where: {
+      visible: true,
+    },
+    include: {
+      pictures: true,
+    },
+  });
+
+  return new NextResponse(JSON.stringify(p));
 }
