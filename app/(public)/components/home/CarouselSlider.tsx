@@ -32,16 +32,16 @@ export default function CarouselSlider({
       showStatus={showStatus}
       showThumbs={showThumbs}
       swipeable
-      
     >
       {images?.map((image: any, index: any) => (
         <div key={index}>
           <Image
-            width={200}
-            height={200}
+            width={"100"}
+            height={"100"}
             alt="Carousel picture"
             src={image.binary}
-                      />
+            className="object-top"
+          />
         </div>
       ))}
     </Carousel>

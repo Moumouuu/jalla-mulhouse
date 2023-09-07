@@ -98,6 +98,24 @@ export default function GeneralForm() {
         {...register("promoteMessage")}
       />
       <HeaderTitle
+        title="Message promotionnel mobile"
+        subtitle="Ce message est le message tout en haut de votre site web pour la version mobile, il ne tourne pas et doit donc être plus petit."
+      />
+      <Input
+        placeholder="Entrez le message que vous souhaitez afficher ..."
+        defaultValue={general.promoteMessageMobile ?? ""}
+        {...register("promoteMessageMobile")}
+      />
+      <HeaderTitle
+        title="Horaires"
+        subtitle="Ce message affiche vos horaires d’ouverture."
+      />
+      <Input
+        placeholder="Entrez vos horaires ..."
+        defaultValue={general.hour ?? ""}
+        {...register("hour")}
+      />
+      <HeaderTitle
         title="Description"
         subtitle="Ce message vous permet de mettre en avant vos valeurs, vos marques. Il est destiné a être plus descriptif."
       />

@@ -17,6 +17,13 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { ImBin } from "react-icons/im";
 import HeaderTitle from "../HeaderTitle";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 export default function MenuForm() {
   const { handleSubmit } = useForm();
   //var
@@ -68,6 +75,7 @@ export default function MenuForm() {
             id: tm.id,
             name: tm.name,
             fatherMenu: sm.name,
+            grandFatherMenu: m.name,
           });
         });
       });
@@ -251,13 +259,23 @@ export default function MenuForm() {
         </SelectContent>
       </Select>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {subMenuList?.map((item: Menu, i) => (
+        {subMenuList?.map((item: any, i) => (
           <div key={i} className="relative">
-            <Input
-              defaultValue={item.name}
-              placeholder="Entrez le nom du menu..."
-              onChange={(e) => updateSubMenu(e, item)}
-            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Input
+                    defaultValue={`${item.name}`}
+                    placeholder="Entrez le nom du menu..."
+                    onChange={(e) => updateSubMenu(e, item)}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{item.fatherMenu}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <ImBin
               onClick={() => deleteMenu(item, 2)}
               className="absolute top-[50%] right-2 -translate-y-[50%] text-red-600 cursor-pointer text-xl md:text-2xl"
@@ -284,21 +302,33 @@ export default function MenuForm() {
           <SelectValue placeholder="Choisir" />
         </SelectTrigger>
         <SelectContent>
-          {subMenuList.map((m: Menu, i) => (
+          {subMenuList.map((m: any, i) => (
             <SelectItem value={m.name} key={i}>
-              {m.name}
+              {m.fatherMenu} - {m.name}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {terMenuList?.map((item: Menu, i) => (
+        {terMenuList?.map((item: any, i) => (
           <div key={i} className="relative">
-            <Input
-              defaultValue={item.name}
-              placeholder="Entrez le nom du menu..."
-              onChange={(e) => updateTerMenu(e, item)}
-            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Input
+                    defaultValue={`${item.name}`}
+                    placeholder="Entrez le nom du menu..."
+                    onChange={(e) => updateTerMenu(e, item)}
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {item.grandFatherMenu} - {item.fatherMenu}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <ImBin
               onClick={() => deleteMenu(item, 3)}
               className="absolute top-[50%] right-2 -translate-y-[50%] text-red-600 cursor-pointer text-xl md:text-2xl"

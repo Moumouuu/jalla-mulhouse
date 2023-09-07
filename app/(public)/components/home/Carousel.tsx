@@ -23,5 +23,11 @@ export default function Carousel() {
 
   if (isLoading) return <Loader />;
 
-  return <CarouselSlider images={general?.carrousel} />;
+  return (
+    <div className="flex justify-center">
+      <div className="w-full md:w-[95%] lg:w-[90%] xl:w-[80%]">
+        <CarouselSlider images={general?.carrousel} />
+      </div>
+    </div>
+  );
 }

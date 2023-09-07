@@ -8,6 +8,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { italiana } from "@/utils/font";
 import { Menu } from "@prisma/client";
 import Image from "next/image";
@@ -52,14 +53,15 @@ export default function NavBarMobile() {
   }, []);
 
   const getPromoteMessage = async () => {
-    const res = await fetch("/api/general", {
+    const res = await fetch("/api/general/mobile", {
       method: "GET",
     });
     const general = await res.json();
+    console.log(general)
     if (!general) {
       return;
     }
-    setPromoteMessage(general?.promoteMessage);
+    setPromoteMessage(general?.promoteMessageMobile);
   };
 
   const getMenus = async () => {
@@ -80,8 +82,15 @@ export default function NavBarMobile() {
   return (
     <>
       {promoteMessage && (
-        <div className="w-full bg-white p-2 text-black text-center text-md border-b-2 ">
-          <p className={italiana.className}>{promoteMessage}</p>
+        <div className="w-full bg-white text-center p-2 text-xl border-b-2 overflow-x-hidden">
+          <p
+            className={cn(
+              italiana.className,
+              "whitespace-nowrap"
+            )}
+          >
+            {promoteMessage}
+          </p>
         </div>
       )}
       <div

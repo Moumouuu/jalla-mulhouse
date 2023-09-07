@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { italiana } from "@/utils/font";
 import { Menu } from "@prisma/client";
 import Image from "next/image";
@@ -88,8 +89,15 @@ export default function NavBar() {
   return (
     <>
       {promoteMessage && (
-        <div className="w-full bg-white p-2 text-center text-md border-b-2 ">
-          <p className={italiana.className}>{promoteMessage}</p>
+        <div className="w-full bg-white p-2 text-2xl border-b-2 overflow-x-hidden">
+          <p
+            className={cn(
+              italiana.className,
+              "animate-banner-slide whitespace-nowrap"
+            )}
+          >
+            {promoteMessage}
+          </p>
         </div>
       )}
       <div className={`bg-white p-3 w-[100vw] ` + italiana.className}>

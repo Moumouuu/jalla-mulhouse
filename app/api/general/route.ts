@@ -2,7 +2,8 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { promoteMessage, about, files } = await req.json();
+  const { promoteMessage, promoteMessageMobile, about, files, hour } =
+    await req.json();
 
   //find object
   const general = await prisma.general.findFirst();
@@ -12,11 +13,15 @@ export async function POST(req: NextRequest) {
     where: { id: general?.id || -1 },
     update: {
       promoteMessage,
+      promoteMessageMobile,
       about,
+      hour,
     },
     create: {
       promoteMessage,
       about,
+      promoteMessageMobile,
+      hour,
     },
   });
 
@@ -24,7 +29,8 @@ export async function POST(req: NextRequest) {
 
   if (
     resUpdated.promoteMessage !== promoteMessage ||
-    resUpdated.about !== about
+    resUpdated.about !== about ||
+    resUpdated.promoteMessageMobile !== promoteMessageMobile
   )
     throw new Error("Error updating general");
 

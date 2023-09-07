@@ -60,10 +60,12 @@ model Promotion {
 }
 
 model General {
-  id             Int       @id @default(autoincrement())
-  promoteMessage String?
-  about          String?
-  carrousel      Picture[]
+  id                   Int       @id @default(autoincrement())
+  promoteMessage       String?
+  promoteMessageMobile String?
+  about                String?
+  hour                 String?
+  carrousel            Picture[]
 }
 
 model Menu {
