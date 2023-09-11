@@ -35,12 +35,10 @@ export default function CarouselSlider({
     >
       {images?.map((image: any, index: any) => (
         <div key={index}>
-          <Image
-            width={"100"}
-            height={"100"}
+          <img
             alt="Carousel picture"
             src={image.url}
-            className="object-top"
+            className="object-top h-full"
           />
         </div>
       ))}

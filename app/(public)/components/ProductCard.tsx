@@ -45,7 +45,7 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     >
       <div className="h-full w-full flex justify-center">
         <img
-          src={item.pictures[0]?.binary}
+          src={item.pictures[0]?.url}
           alt="Item"
           className="object-cover"
         />
