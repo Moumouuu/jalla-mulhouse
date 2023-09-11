@@ -39,7 +39,7 @@ export default function CarouselSlider({
             width={"100"}
             height={"100"}
             alt="Carousel picture"
-            src={image.binary}
+            src={image.url}
             className="object-top"
           />
         </div>
