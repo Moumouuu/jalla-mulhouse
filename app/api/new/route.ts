@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     const res = await prisma.product.delete({
       where: { id: id },
     });
+
     if (!res) throw new Error("Error during product deletion");
   }
 
@@ -23,7 +24,6 @@ export async function POST(req: NextRequest) {
       price: Number(size.price),
     };
   });
-
 
   const newProduct = await prisma.product.create({
     data: {
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
       },
       pictures: {
         create: images.map((image: any) => ({
-          binary: image.binary?.toString(),
+          url: image.url as string,
         })),
       },
       new: product?.new ?? true,

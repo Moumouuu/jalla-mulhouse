@@ -19,14 +19,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { Color, Height, Picture } from "@prisma/client";
-import Image from "next/image";
+import { Color, Height } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
+import { AiFillDelete, AiOutlinePlus } from "react-icons/ai";
 import HeaderTitle from "../HeaderTitle";
+
+import { UploadButton } from "@/lib/uploadthing";
+import "@uploadthing/react/styles.css";
+import Image from "next/image";
 
 interface ProductItemFormProps {
   productItem?: any;
@@ -53,7 +56,8 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
   useEffect(() => {
     fetchData();
     formatMenuList();
-  }, [loading]);
+    console.log(files);
+  }, [loading, files]);
 
   //method
   const fetchData = async () => {
@@ -112,24 +116,6 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
         error: "Erreur lors de la création du produit.",
       }
     );
-  };
-
-  const fileToDataUri = (file: any) =>
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        resolve(event.target?.result);
-      };
-      reader.readAsDataURL(file);
-    });
-
-  const handleChange = (files: any) => {
-    for (let i = 0; i < files.target.files.length; i++) {
-      const file = files.target.files[i];
-      fileToDataUri(file).then((dataUri) => {
-        setFile((prev: any) => [...prev, { binary: dataUri }]);
-      });
-    }
   };
 
   const addColor = (e: any) => {
@@ -197,6 +183,11 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
         error: "Une erreur est survenue",
       }
     );
+  };
+
+  const onUploadFilesComplete = (res: any) => {
+    const f = [...files, ...res];
+    setFile(f);
   };
 
   if (!menus) {
@@ -268,19 +259,31 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
       </Select>
 
       <HeaderTitle title="Photos" subtitle="Les photos de votre produit." />
-      <Input type="file" multiple onChange={(e) => handleChange(e)} />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {product?.pictures?.map((item: Picture) => (
-          <div key={item.id} className="relative flex items-center justify-end">
+      <UploadButton
+        endpoint="imageUploader"
+        onClientUploadComplete={(res) => {
+          onUploadFilesComplete(res);
+        }}
+        onUploadError={(error: Error) => {
+          alert(`ERROR! ${error.message}`);
+        }}
+      />
+      <div className=" grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-4 ">
+        {files?.map((file: any) => (
+          <div className="relative" key={file.id}>
             <Image
-              alt="picture for the carrousel"
-              src={item.binary}
-              height={200}
+              key={file.id}
               width={200}
+              height={200}
+              src={file.url}
+              alt={"picture "}
+              className="rounded-md "
             />
-            <AiOutlineClose
-              onClick={() => handleDeletePicture(item.id)}
-              className="text-red-600 text-2xl absolute right-3 top-3 cursor-pointer"
+            <AiFillDelete
+              className="absolute top-2 right-1 cursor-pointer"
+              color="red"
+              size={20}
+              onClick={() => handleDeletePicture(file.id)}
             />
           </div>
         ))}

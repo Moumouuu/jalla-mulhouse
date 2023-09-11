@@ -28,7 +28,7 @@ model Product {
 
 model Picture {
   id        Int      @id @default(autoincrement())
-  binary    String
+  url       String
   product   Product? @relation(fields: [productId], references: [id])
   productId Int?
   General   General? @relation(fields: [generalId], references: [id])

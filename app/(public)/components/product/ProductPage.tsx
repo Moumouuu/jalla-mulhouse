@@ -43,7 +43,7 @@ export default function ProductPage({ item }: ProductPageProps) {
     });
     const data = await res.json();
     setMenu(data.name);
-  }, [product.menu]);
+  }, [product?.menu]);
 
   useEffect(() => {
     promoAlreadyAvailable();
@@ -58,7 +58,7 @@ export default function ProductPage({ item }: ProductPageProps) {
     if (height && product.promotion) {
       return height.price - (height.price * product?.promotion?.discount) / 100;
     }
-    return product.height[0].price;
+    return product?.height[0].price;
   }, [heightSelected, product]);
 
   const priceByHeight = useCallback(() => {

@@ -3,18 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
 import { Textarea } from "@/components/ui/textarea";
-import { Picture } from "@prisma/client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { AiOutlineClose } from "react-icons/ai";
 import HeaderTitle from "../HeaderTitle";
+
+import { UploadButton } from "@/lib/uploadthing";
+import "@uploadthing/react/styles.css";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function GeneralForm() {
   const { register, handleSubmit } = useForm();
-  const [files, setFile] = useState<any>([]);
   const [general, setGeneral] = useState<any>();
+  const [files, setFile] = useState<any>([]);
 
   const fetchData = async () => {
     const res = await fetch("/api/general", {
@@ -74,6 +76,11 @@ export default function GeneralForm() {
     );
   };
 
+  const onUploadFilesComplete = (res: any) => {
+    const f = [...files, ...res];
+    setFile(f);
+  };
+
   if (!general) {
     return <Loader />;
   }
@@ -128,26 +135,34 @@ export default function GeneralForm() {
         title="Carrousel"
         subtitle="Le carrousel représente les images qui défilent."
       />
-      <Input
-        id="picture"
-        type="file"
-        multiple
-        onChange={(e) => handleChange(e)}
+
+      <UploadButton
+        endpoint="imageUploader"
+        onClientUploadComplete={(res) => {
+          onUploadFilesComplete(res);
+        }}
+        onUploadError={(error: Error) => {
+          alert(`ERROR! ${error.message}`);
+        }}
       />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-        {general.carrousel.map((item: Picture) => (
-          <div key={item.id} className="relative flex items-center justify-end">
-            <Image
-              alt="picture for the carrousel"
-              src={item.binary}
-              height={200}
-              width={200}
-            />
-            <AiOutlineClose
-              onClick={() => handleDeletePicture(item.id)}
-              className="text-red-600 text-2xl absolute right-3 top-3 cursor-pointer"
-            />
-          </div>
+      <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-4 ">
+        {general?.carrousel?.map((file: any) => (
+          <div className="relative" key={file.id}>
+          <Image
+            key={file.id}
+            width={200}
+            height={200}
+            src={file.url}
+            alt={"picture "}
+            className="rounded-md "
+          />
+          <AiFillDelete
+            className="absolute top-2 right-1 cursor-pointer"
+            color="red"
+            size={20}
+            onClick={() => handleDeletePicture(file.id)}
+          />
+        </div>
         ))}
       </div>
       <div>
