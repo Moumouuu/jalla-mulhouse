@@ -87,7 +87,12 @@ export default function MenuForm() {
   };
 
   const submitData = async () => {
+    // remove grandFatherMenu from terMenuList
+    terMenuList.forEach((tm: any) => {
+      delete tm.grandFatherMenu;
+    });
     console.log(menuList, subMenuList, terMenuList);
+
     toast.promise(
       fetch("/api/menu", {
         method: "POST",
