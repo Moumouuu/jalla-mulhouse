@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const data = await resend.emails.send({
       from: `Acme <ne-pas-repondre@jalla-mulhouse.fr>`,
       to: ["mbmulhouse@free.fr", "robin@pluviaux.fr"],
-      subject: "Hello world",
+      subject: "📦 Nouveau message de Jalla-Mulhouse",
       react: EmailTemplate({
         firstName,
         lastName,
