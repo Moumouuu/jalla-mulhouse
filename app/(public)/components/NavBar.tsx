@@ -36,6 +36,7 @@ export default function NavBar() {
     setProducts(products);
   };
 
+
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
     return (
@@ -43,6 +44,7 @@ export default function NavBar() {
       product.visible
     );
   });
+
 
   const socialNetworks = [
     {
@@ -135,7 +137,7 @@ export default function NavBar() {
                             <Image
                               width={60}
                               height={60}
-                              src={product?.pictures[0]?.binary}
+                              src={product?.pictures[0]?.url}
                               alt="Item"
                               className="object-cover rounded"
                             />

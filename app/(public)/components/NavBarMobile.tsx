@@ -213,7 +213,7 @@ export default function NavBarMobile() {
                         <Image
                           width={60}
                           height={60}
-                          src={product?.pictures[0]?.binary}
+                          src={product?.pictures[0]?.url}
                           alt="Item"
                           className="object-cover rounded"
                         />
