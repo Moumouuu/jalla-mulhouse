@@ -4,7 +4,11 @@ import { italiana, julius } from "@/utils/font";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AiOutlineClockCircle, AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
+import {
+  AiOutlineClockCircle,
+  AiOutlineMail,
+  AiOutlinePhone,
+} from "react-icons/ai";
 import { FaFacebookF, FaInstagram } from "react-icons/fa";
 import { MdPlace } from "react-icons/md";
 
@@ -71,7 +75,7 @@ export default function FooterPage() {
           </span>
           <div className="flex items-center my-1">
             <AiOutlineClockCircle size={25} />
-            <p className="ml-2">{hour}</p>
+            <p className="ml-2 whitespace-pre-line">{hour}</p>
           </div>
         </div>
         <div className="flex items-center mt-6 lg:mt-0 ">
@@ -90,6 +94,12 @@ export default function FooterPage() {
         </div>
       </div>
       <div className="px-3 w-full bg-white">
+        <Link
+          href={"/admin"}
+          className={italiana.className + " underline underline-offset-2 my-2"}
+        >
+          Admin
+        </Link>
         <div className="flex flex-col lg:flex-row justify-between">
           <p className={italiana.className + " text-sm my-2"}>
             Website designed & developed by{" "}
@@ -103,15 +113,9 @@ export default function FooterPage() {
             </Link>
           </p>
           <p className={italiana.className + " text-sm my-2"}>
-            Copyright © 2023 - All right reserved by Jalla mulhouse
+            Copyright © 2024 - All right reserved by Jalla mulhouse
           </p>
         </div>
-        <Link
-          href={"/admin"}
-          className={italiana.className + " underline underline-offset-2 my-2"}
-        >
-          Admin
-        </Link>
       </div>
     </>
   );

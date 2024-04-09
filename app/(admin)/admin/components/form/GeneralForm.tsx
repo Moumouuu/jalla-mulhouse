@@ -117,7 +117,7 @@ export default function GeneralForm() {
         title="Horaires"
         subtitle="Ce message affiche vos horaires d’ouverture."
       />
-      <Input
+      <Textarea
         placeholder="Entrez vos horaires ..."
         defaultValue={general.hour ?? ""}
         {...register("hour")}

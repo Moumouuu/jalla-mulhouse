@@ -35,6 +35,7 @@ export default function ContactForm() {
             <Input
               placeholder="Entrez votre nom..."
               {...register("lastName")}
+              required
               type="text"
             />
           </div>
@@ -43,6 +44,7 @@ export default function ContactForm() {
             <Input
               placeholder="Entrez votre prénom..."
               {...register("firstName")}
+              required
               type="text"
             />
           </div>
@@ -52,6 +54,7 @@ export default function ContactForm() {
             <label className={julius.className}>Adresse Email</label>
             <Input
               placeholder="Entrez votre e-mail..."
+              required
               {...register("email")}
               type="email"
             />
@@ -61,6 +64,7 @@ export default function ContactForm() {
             <Input
               placeholder="Entrez votre téléphone..."
               {...register("phoneNumber")}
+              required
               type="tel"
             />
           </div>
@@ -68,6 +72,7 @@ export default function ContactForm() {
         <Textarea
           className="text-white className={julius.className}"
           placeholder="Entrez votre message"
+          required
           {...register("message")}
         />
         <Button type="submit">Envoyer</Button>

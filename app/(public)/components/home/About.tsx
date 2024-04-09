@@ -29,7 +29,12 @@ export default function About() {
         Jalla Mulhouse
       </h1>
       <div className="flex justify-center">
-        <p className={julius.className + " text-md lg:text-xl lg:max-w-[60vw]"}>
+        <p
+          className={
+            julius.className +
+            " text-md lg:text-xl lg:max-w-[60vw] whitespace-pre-line"
+          }
+        >
           {general?.about}
         </p>
       </div>
