@@ -78,7 +78,7 @@ export default function ProductPage({ item }: ProductPageProps) {
         <div className="flex lg:flex-row flex-col">
           <div className="mr-10 w-full lg:w-[60%] ">
             <CarouselSlider
-              images={product.pictures}
+              images={product?.pictures}
               showArrows={true}
               autoPlay={true}
               infiniteLoop={true}
@@ -99,16 +99,23 @@ export default function ProductPage({ item }: ProductPageProps) {
               {menu}
             </span>
 
-            <div className="flex flex-col my-6">
-              <span className={julius.className + " text-xl lg:text-2xl"}>
-                {product.colors?.length} couleurs disponibles
-              </span>
-              <div className="w-full flex overflow-x-scroll mt-2">
-                {product.colors?.map((color: any, index: any) => (
-                  <input type="color" key={index} value={color.hex} disabled />
-                ))}
+            {product.colors?.length > 0 && (
+              <div className="flex flex-col my-6">
+                <span className={julius.className + " text-xl lg:text-2xl"}>
+                  {product.colors?.length} couleurs disponibles
+                </span>
+                <div className="w-full flex ">
+                  {product.colors?.map((color: any, index: any) => (
+                    <input
+                      type="color"
+                      key={index}
+                      value={color.hex}
+                      disabled
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex flex-col my-6 ">
               <span className={julius.className + " mb-2 text-xl lg:text-2xl"}>
@@ -150,7 +157,7 @@ export default function ProductPage({ item }: ProductPageProps) {
           <h3 className={italiana.className + " text-2xl lg:text-3xl mb-3"}>
             Description du produit
           </h3>
-          <p className={italiana.className + " text-lg "}>
+          <p className={italiana.className + " text-lg whitespace-pre-line"}>
             {product.description}
           </p>
         </div>

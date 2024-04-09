@@ -31,6 +31,7 @@ export default function CarouselSlider({
       showIndicators={showIndicators}
       showStatus={showStatus}
       showThumbs={showThumbs}
+      centerMode
       swipeable
     >
       {images?.map((image: any, index: any) => (
@@ -38,7 +39,7 @@ export default function CarouselSlider({
           <img
             alt="Carousel picture"
             src={image.url}
-            className="object-top h-full"
+            className=" h-full"
           />
         </div>
       ))}

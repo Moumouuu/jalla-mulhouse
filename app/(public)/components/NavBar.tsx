@@ -36,7 +36,6 @@ export default function NavBar() {
     setProducts(products);
   };
 
-
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
     return (
@@ -44,7 +43,6 @@ export default function NavBar() {
       product.visible
     );
   });
-
 
   const socialNetworks = [
     {
@@ -102,7 +100,7 @@ export default function NavBar() {
           </p>
         </div>
       )}
-      <div className={`bg-white p-3 w-[100vw] ` + italiana.className}>
+      <div className={`bg-white p-3 w-screen ` + italiana.className}>
         <div className="flex items-start justify-between">
           <Link href={"/"}>
             <Image
@@ -152,7 +150,7 @@ export default function NavBar() {
               )}
             </div>
 
-            <div className="flex w-full justify-around">
+            <div className="flex w-full flex-wrap justify-around">
               {menusList?.map((menu: any, index) => (
                 <div
                   className={"flex flex-col items-center relative"}
