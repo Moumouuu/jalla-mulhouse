@@ -150,7 +150,9 @@ export default function ProductPage({ item }: ProductPageProps) {
           <h3 className={italiana.className + " text-2xl lg:text-3xl mb-3"}>
             Description du produit
           </h3>
-          <p className={julius.className + " text-lg"}>{product.description}</p>
+          <p className={italiana.className + " text-lg "}>
+            {product.description}
+          </p>
         </div>
       </div>
     </div>
