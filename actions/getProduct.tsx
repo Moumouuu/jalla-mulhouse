@@ -1,16 +1,11 @@
-import prisma from "../lib/prisma";
-
 export default async function GetProduct(id: Number) {
-  return await prisma.product.findMany({
-    where: {
-      id: Number(id),
-    },
-
-    include: {
-      promotion: true,
-      colors: true,
-      pictures: true,
-      height: true,
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=deep`,
+    {
+      method: "GET",
+    }
+  );
+  const { data } = await res.json();
+  console.log("data :", data);
+  return data;
 }

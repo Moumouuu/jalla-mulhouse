@@ -4,6 +4,7 @@ import MoreProduct from "../../components/product/MoreProduct";
 import ProductPage from "../../components/product/ProductPage";
 
 export default async function Page({ params }: any) {
+  console.log("params :", params);
   const product = await getProduct(params.id);
   const purposeProduct = await getProducts();
 
@@ -14,7 +15,7 @@ export default async function Page({ params }: any) {
   return (
     <div className="mx-2">
       <ProductPage item={product} />
-      <MoreProduct purposeProduct={purposeProduct} />
+      <MoreProduct purposeProduct={purposeProduct} currentProductId={ product.id } />
     </div>
   );
 }

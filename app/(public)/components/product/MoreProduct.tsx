@@ -5,12 +5,17 @@ import ProductCard from "../ProductCard";
 
 interface MoreProductProps {
   purposeProduct: any;
+  currentProductId: number;
 }
 
-export default function MoreProduct({ purposeProduct }: MoreProductProps) {
+export default function MoreProduct({
+  purposeProduct,
+  currentProductId,
+}: MoreProductProps) {
   const productListFiltered = purposeProduct?.filter(
-    (product: any) => product.visible
+    (product: any) => product.id !== currentProductId
   );
+
   if (productListFiltered.length === 0) {
     return (
       <div className="flex justify-center mt-6 lg:mt-10">

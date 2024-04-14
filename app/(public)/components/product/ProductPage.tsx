@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import CarouselSlider from "../home/CarouselSlider";
 
 interface ProductPageProps {
@@ -18,67 +18,57 @@ interface ProductPageProps {
 
 export default function ProductPage({ item }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
-  const [product, setProduct] = useState<any>(item[0]);
-  const [menu, setMenu] = useState<any>("");
+  const [product, setProduct] = useState<any>(item);
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
-    const startDate = new Date(product.promotion?.launchDay);
-    const endDate = new Date(product.promotion?.endDay);
+    const startDate = new Date(
+      item.attributes.promotion.data?.attributes?.launchDay
+    );
+    const endDate = new Date(
+      item.attributes.promotion.data?.attributes?.endDay
+    );
 
+    // already available
     if (currentDate > startDate && currentDate < endDate) {
       return;
     }
-    setProduct((prev: any) => {
-      return {
-        ...prev,
-        promotion: null,
-      };
-    });
   };
 
-  const fetchMenu = useCallback(async () => {
-    const res = await fetch(`/api/menu?id=${product.menu}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setMenu(data.name);
-  }, [product?.menu]);
-
-  useEffect(() => {
-    promoAlreadyAvailable();
-    fetchMenu();
-  }, []);
-
   const calculatePromotion = useMemo(() => {
-    const height = product?.height?.find(
+    const height = product?.attributes?.heights.data?.find(
       (height: any) => height.id === heightSelected
     );
 
-    if (height && product.promotion) {
-      return height.price - (height.price * product?.promotion?.discount) / 100;
+    if (height && product.attributes.promotion.data) {
+      return (
+        height.attributes.price -
+        (height.attributes.price *
+          product.attributes?.promotion.data.attributes?.discount) /
+          100
+      );
     }
-    return product?.height[0].price;
+    return product?.attributes?.heights.data[0].attributes.price;
   }, [heightSelected, product]);
 
   const priceByHeight = useCallback(() => {
-    const height = product.height?.find(
+    const height = product.attributes.heights.data?.find(
       (height: any) => height.id === heightSelected
     );
 
     if (height) {
-      return height.price;
+      return height.attributes.price;
     }
-    return product.height[0].price;
+    return product.attributes.heights.data[0].attributes.price;
   }, [heightSelected, product]);
 
   return (
     <div className="flex justify-center mt-5 lg:mt-8">
       <div className="w-full lg:w-[90%] text-white flex flex-col">
         <div className="flex lg:flex-row flex-col">
-          <div className="mr-10 w-full lg:w-[60%] ">
+          <div className="mr-10 w-full lg:w-[60%]">
             <CarouselSlider
-              images={product?.pictures}
+              images={product?.attributes.images.data}
               showArrows={true}
               autoPlay={true}
               infiniteLoop={true}
@@ -91,31 +81,8 @@ export default function ProductPage({ item }: ProductPageProps) {
             <h4
               className={italiana.className + " text-4xl lg:text-4xl uppercase"}
             >
-              {product.title}
+              {product?.attributes.title}
             </h4>
-            <span
-              className={julius.className + " text-lg lg:text-md text-gray-500"}
-            >
-              {menu}
-            </span>
-
-            {product.colors?.length > 0 && (
-              <div className="flex flex-col my-6">
-                <span className={julius.className + " text-xl lg:text-2xl"}>
-                  {product.colors?.length} couleurs disponibles
-                </span>
-                <div className="w-full flex ">
-                  {product.colors?.map((color: any, index: any) => (
-                    <input
-                      type="color"
-                      key={index}
-                      value={color.hex}
-                      disabled
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div className="flex flex-col my-6 ">
               <span className={julius.className + " mb-2 text-xl lg:text-2xl"}>
@@ -127,11 +94,13 @@ export default function ProductPage({ item }: ProductPageProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {product.height?.map((height: any, index: any) => (
-                      <SelectItem key={index} value={height.id}>
-                        {height.height}
-                      </SelectItem>
-                    ))}
+                    {product.attributes.heights.data?.map(
+                      (height: any, index: any) => (
+                        <SelectItem key={index} value={height.id}>
+                          {height.attributes.height}
+                        </SelectItem>
+                      )
+                    )}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -140,12 +109,14 @@ export default function ProductPage({ item }: ProductPageProps) {
             <span
               className={
                 italiana.className +
-                (product.promotion ? " line-through" : " " + " text-3xl")
+                (product.attributes.promotion.data
+                  ? " line-through"
+                  : " " + " text-3xl")
               }
             >
               {priceByHeight()}€
             </span>
-            {product.promotion && (
+            {product.attributes.promotion.data && (
               <span className={italiana.className + " text-3xl"}>
                 {calculatePromotion} €
               </span>
@@ -158,7 +129,7 @@ export default function ProductPage({ item }: ProductPageProps) {
             Description du produit
           </h3>
           <p className={italiana.className + " text-lg whitespace-pre-line"}>
-            {product.description}
+            {product.attributes.description}
           </p>
         </div>
       </div>
