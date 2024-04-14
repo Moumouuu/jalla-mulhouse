@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 
@@ -38,8 +37,8 @@ export default function CarouselSlider({
         <div key={index}>
           <img
             alt="Carousel picture"
-            src={image.url}
-            className=" h-full"
+            src={process.env.NEXT_PUBLIC_API_IMAGE_URL + image.attributes?.url}
+            className="h-full"
           />
         </div>
       ))}

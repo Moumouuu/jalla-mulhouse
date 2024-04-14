@@ -11,11 +11,17 @@ export default function Carousel() {
   useEffect(() => {
     const getGeneral = async () => {
       setIsLoading(true);
-      const res = await fetch("/api/general", {
-        method: "GET",
-      });
-      const general = await res.json();
-      setGeneral(general);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/general-information?populate=*`,
+        {
+          method: "GET",
+        }
+      );
+      const { data } = await res.json();
+
+      console.log(data);
+
+      setGeneral(data.attributes.images.data);
       setIsLoading(false);
     };
     getGeneral();
@@ -25,8 +31,8 @@ export default function Carousel() {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full md:w-[95%] lg:w-[90%] xl:w-[80%]">
-        <CarouselSlider images={general?.carrousel} />
+      <div className="w-full ">
+        <CarouselSlider images={general} />
       </div>
     </div>
   );
