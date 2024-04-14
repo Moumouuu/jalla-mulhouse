@@ -142,7 +142,7 @@ export default function NavBar() {
                               width={60}
                               height={60}
                               src={
-                                
+
                                 product?.attributes.images.data[0].attributes
                                   .url
                               }

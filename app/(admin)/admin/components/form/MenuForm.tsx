@@ -183,37 +183,37 @@ export default function MenuForm() {
   const addMenu = (e: any, i: Number) => {
     e.preventDefault();
 
-    switch (i) {
-      case 1:
-        setMenuList([
-          ...menuList,
-          {
-            id: Math.floor(Math.random() * (1000000000 - 999)) + 999,
-            name: "",
-          },
-        ]);
-        break;
-      case 2:
-        setSubMenuList([
-          ...subMenuList,
-          {
-            id: Math.floor(Math.random() * (1000000000 - 999) + 999),
-            name: "",
-            fatherMenu: fatherMenuSubMenu,
-          },
-        ]);
-        break;
-      case 3:
-        setTerMenuList([
-          ...terMenuList,
-          {
-            id: Math.floor(Math.random() * (1000000000 - 999) + 999),
-            name: "",
-            fatherMenu: fatherMenuTerMenu,
-          },
-        ]);
-        break;
-    }
+    // switch (i) {
+    //   case 1:
+    //     setMenuList([
+    //       ...menuList,
+    //       {
+    //         id: Math.floor(Math.random() * (1000000000 - 999)) + 999,
+    //         name: "",
+    //       },
+    //     ]);
+    //     break;
+    //   case 2:
+    //     setSubMenuList([
+    //       ...subMenuList,
+    //       {
+    //         id: Math.floor(Math.random() * (1000000000 - 999) + 999),
+    //         name: "",
+    //         fatherMenu: fatherMenuSubMenu,
+    //       },
+    //     ]);
+    //     break;
+    //   case 3:
+    //     setTerMenuList([
+    //       ...terMenuList,
+    //       {
+    //         id: Math.floor(Math.random() * (1000000000 - 999) + 999),
+    //         name: "",
+    //         fatherMenu: fatherMenuTerMenu,
+    // },
+    //     ]);
+    //     break;
+    // }
   };
 
   const deleteMenu = (menu: Menu, i: Number) => {
@@ -455,7 +455,7 @@ const CatalogAndVideo: React.FC<CatalogAndVideoProps> = ({ c }) => {
   };
 
   const handleSave = () => {
-    console.log("totot",editedItem);
+    console.log("totot", editedItem);
     fetch("/api/menu/catalogAndVideo", {
       method: "PUT",
       body: JSON.stringify({
