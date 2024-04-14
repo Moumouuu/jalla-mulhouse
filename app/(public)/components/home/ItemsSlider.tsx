@@ -1,17 +1,14 @@
 "use client";
 
 import { italiana } from "@/utils/font";
-import { Product } from "@prisma/client";
-import { useState } from "react";
 import ProductCard from "../ProductCard";
 
 interface ItemsSliderProps {
   label: string;
-  items: Product[];
+  items: any;
 }
 
 export default function ItemsSlider({ label, items }: ItemsSliderProps) {
-
   if (items?.length === 0) {
     return null;
   }
@@ -27,7 +24,7 @@ export default function ItemsSlider({ label, items }: ItemsSliderProps) {
         {label}
       </h2>
       <div className="w-full grid grid-flow-col gap-4 lg:gap-6 overflow-x-auto mx-2 lg:mx-6">
-        {items?.map((item: any, index: any) => (
+        {items.data?.map((item: any, index: any) => (
           <ProductCard key={index} itemProduct={item} />
         ))}
       </div>

@@ -12,10 +12,15 @@ export default function ProductCard({ itemProduct }: ItemProps) {
   const calculatePromotion = (price: number, discount: number) => {
     return price - (price * discount) / 100;
   };
+
+  console.log(item);
+
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
-    const startDate = new Date(item.promotion?.launchDay);
-    const endDate = new Date(item.promotion?.endDay);
+    const startDate = new Date(
+      item.attributes.promotion.data?.attributes?.launchDay
+    );
+    const endDate = new Date(item.attributes.promotion.data?.attributes?.endDay);
 
     // already available
     if (currentDate > startDate && currentDate < endDate) {
@@ -34,9 +39,6 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     promoAlreadyAvailable();
   }, []);
 
-  if (!item.visible) {
-    return null;
-  }
 
   return (
     <Link
@@ -45,7 +47,10 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     >
       <div className="h-full w-full flex justify-center">
         <img
-          src={item.pictures[0]?.url}
+          src={
+            process.env.NEXT_PUBLIC_API_IMAGE_URL +
+            item.attributes.images.data[0]?.attributes?.url
+          }
           alt="Item"
           className="object-cover"
         />
@@ -53,10 +58,10 @@ export default function ProductCard({ itemProduct }: ItemProps) {
       <div className="flex w-full p-2 m-2 justify-between">
         <div className="flex flex-col ">
           <p className={julius.className + " mb-3"}>
-            {item.title.substr(0, 20)}...
+            {item.attributes.title.substr(0, 20)}...
           </p>
           <div className="flex">
-            {item.new ? (
+            {item.attributes.new ? (
               <div
                 className={
                   italiana.className +
@@ -66,14 +71,14 @@ export default function ProductCard({ itemProduct }: ItemProps) {
                 New
               </div>
             ) : null}
-            {item.promotion ? (
+            {item.attributes.promotion.data ? (
               <div
                 className={
                   italiana.className +
                   " px-2 lg:px-4 text-sm lg:text-lg bg-black text-white rounded-xl"
                 }
               >
-                -{item.promotion.discount}%
+                -{item.attributes.promotion.data?.attributes.discount}%
               </div>
             ) : null}
           </div>
@@ -81,16 +86,17 @@ export default function ProductCard({ itemProduct }: ItemProps) {
         <div className="flex flex-col">
           <p
             className={
-              italiana.className + (item.promotion ? ` line-through` : " ")
+              italiana.className +
+              (item.attributes.promotion.data ? ` line-through` : " ")
             }
           >
-            {item.height[0]?.price}€
+            {item.attributes.heights.data[0]?.attributes?.price}€
           </p>
-          {item.promotion && (
+          {item.attributes.promotion.data && (
             <p className={italiana.className}>
               {calculatePromotion(
-                item.height[0]?.price,
-                item.promotion.discount
+                item.attributes.heights.data[0]?.attributes?.price,
+                item.attributes.promotion.data?.attributes.discount
               )}
               €
             </p>

@@ -11,11 +11,17 @@ export default function About() {
   useEffect(() => {
     const getGeneral = async () => {
       setIsLoading(true);
-      const res = await fetch("/api/general", {
-        method: "GET",
-      });
-      const general = await res.json();
-      setGeneral(general);
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/general-information?populate=*`,
+        {
+          method: "GET",
+        }
+      );
+      const { data } = await res.json();
+
+      console.log(data);
+
+      setGeneral(data.attributes);
       setIsLoading(false);
     };
     getGeneral();
@@ -32,7 +38,7 @@ export default function About() {
         <p
           className={
             julius.className +
-            " text-md lg:text-xl lg:max-w-[60vw] whitespace-pre-line"
+            " text-md lg:text-xl lg:max-w-[60vw] whitespace-pre-line "
           }
         >
           {general?.about}
