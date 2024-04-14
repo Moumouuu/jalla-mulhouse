@@ -19,23 +19,37 @@ import ProductCard from "../ProductCard";
 export default function SearchPage() {
   //var
   const searchParams = useSearchParams();
-  const menuId = searchParams?.get("q");
+  const firstMenuId = searchParams?.get("menu");
+  const submenuId = searchParams?.get("submenu");
+  const termenuId = searchParams?.get("termenu");
+
+  const menuId = termenuId || submenuId || firstMenuId;
+
+  const isFistMenu = !!firstMenuId;
+  const isSubmenu = !!submenuId;
+  const isTerMenu = !!termenuId;
+
   const [products, setProducts] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [menuName, setMenuName] = useState<string>("");
+  const [urlVideo, setUrlVideo] = useState<string>("");
+  const [urlCatalog, setUrlCatalog] = useState<string>("");
+
   //fetch
   useEffect(() => {
-    getProducts();
+    //getProducts();
     fetchMenu();
   }, [menuId]);
 
   //functions
   const getProducts = async () => {
     setLoading(true);
+
     const res = await fetch("api/products/search", {
       method: "POST",
       body: JSON.stringify({ menuId }),
     }).then((res) => res.json());
+
     const data = await res;
     setProducts(data.products);
     setMenuName(data.menu.name);
@@ -43,12 +57,73 @@ export default function SearchPage() {
   };
 
   const fetchMenu = useCallback(async () => {
+    setLoading(true);
     // todo : get video & catalog from menu
-    const res = await fetch(`/api/menu?id=${menuId}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setMenuName(data.name);
+    let category;
+    if (isFistMenu) category = "menus";
+    if (isSubmenu) category = "sub-menus";
+    if (isTerMenu) category = "ter-menus";
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/${category}/${menuId}?populate=*deep`,
+      {
+        method: "GET",
+      }
+    );
+
+    const { data } = await res.json();
+    console.log(data);
+
+    setMenuName(data.attributes.name);
+
+    if (isFistMenu) {
+      setUrlVideo(data.attributes.urlVideo);
+      setUrlCatalog(data.attributes.urlCatalog);
+    }
+
+    // depend of the category we fetch the products
+    if (isFistMenu) {
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/products?populate=*&filters[menu][id][$eq]=${Number(menuId)}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const { data } = await res.json();
+      setProducts(data);
+    }
+    if (isSubmenu) {
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/products?populate=*&filters[sub_menu][id][$eq]=${Number(menuId)}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const { data } = await res.json();
+      setProducts(data);
+    }
+    if (isTerMenu) {
+      const res = await fetch(
+        `${
+          process.env.NEXT_PUBLIC_API_URL
+        }/products?populate=*&filters[ter_menu][id][$eq]=${Number(menuId)}`,
+        {
+          method: "GET",
+        }
+      );
+
+      const { data } = await res.json();
+      setProducts(data);
+    }
+
+    setLoading(false);
+    // set
   }, [menuId]);
 
   const orderProduct = (e: any) => {
@@ -130,39 +205,47 @@ export default function SearchPage() {
       </div>
 
       <div className="w-full flex flex-col lg:flex-row justify-around">
-        <div className="flex-col">
-          <h3
-            className={
-              italiana.className + " text-xl lg:text-3xl text-white uppercase"
-            }
-          >
-            Vidéo de présentation
-          </h3>
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/3IQLXvF7Cbs?si=K0prU8wKsL_hYFff"
-            title="YouTube video player"
-            // @ts-ignore
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-        </div>
+        {urlVideo && (
+          <div className="flex-col">
+            <h3
+              className={
+                italiana.className + " text-xl lg:text-3xl text-white uppercase"
+              }
+            >
+              Vidéo de présentation
+            </h3>
+            <iframe
+              width="560"
+              height="315"
+              src={urlVideo}
+              title="YouTube video player"
+              // @ts-ignore
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+        )}
 
-        <div className="flex-col">
-          <h3
-            className={
-              italiana.className + " text-xl lg:text-3xl text-white uppercase"
-            }
-          >
-            Catalogue
-          </h3>
-          <Link href="/catalogue" className="underline text-blue-400">
-            Voir le catalogue
-          </Link>
-        </div>
+        {urlCatalog && (
+          <div className="flex-col">
+            <h3
+              className={
+                italiana.className + " text-xl lg:text-3xl text-white uppercase"
+              }
+            >
+              Catalogue
+            </h3>
+            <Link
+              target="_blank"
+              href={urlCatalog}
+              className="underline text-blue-400"
+            >
+              Voir le catalogue
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
