@@ -2,7 +2,15 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  let { menuList, subMenuList, terMenuList } = await req.json();
+  let { menuList, subMenuList, terMenuList, catalogAndVideo } =
+    await req.json();
+
+  // update catalog and video
+  const catalogAndVideoUpdate = await prisma.catalogAndVideo.upsert({
+    where: { menuId: Number(catalogAndVideo.menuId) },
+    update: { ...catalogAndVideo, menuId: Number(catalogAndVideo.menuId) },
+    create: { ...catalogAndVideo, menuId: Number(catalogAndVideo.menuId) },
+  });
 
   menuList?.forEach(async (menu: any) => {
     // update menu
@@ -129,6 +137,8 @@ export async function DELETE(req: NextRequest) {
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
 
+  console.log(id);
+
   if (id) {
     let menu;
     menu = await prisma.menu.findUnique({
@@ -152,6 +162,7 @@ export async function GET(request: NextRequest) {
 
   const menuList = await prisma.menu.findMany({
     include: {
+      catalogAndVideo: true,
       subMenu: {
         include: {
           terMenu: true,

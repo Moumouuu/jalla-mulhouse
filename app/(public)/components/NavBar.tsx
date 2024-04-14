@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AiOutlineMail } from "react-icons/ai";
-import { FaFacebookF, FaInstagram } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 import { PiMagnifyingGlassLight } from "react-icons/pi";
 
 export default function NavBar() {
@@ -14,6 +14,7 @@ export default function NavBar() {
   const [search, setSearch] = useState<string>("");
   const [promoteMessage, setPromoteMessage] = useState<any>("");
   const [products, setProducts] = useState<any>([]);
+  const [hoveredMenu, setHoveredMenu] = useState<string>("");
 
   useEffect(() => {
     getMenus();
@@ -21,34 +22,37 @@ export default function NavBar() {
   }, []);
 
   const getMenus = async () => {
-    const res = await fetch("/api/menu/all", {
-      method: "GET",
-    });
-    const menus = await res.json();
-    setMenusList(menus);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menus?populate=deep`,
+      {
+        method: "GET",
+      }
+    );
+    const { data } = await res.json();
+
+    console.log(data);
+    setMenusList(data);
   };
 
   const getProducts = async () => {
-    const res = await fetch("/api/products/search", {
-      method: "GET",
-    });
-    const products = await res.json();
-    setProducts(products);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/products?populate=images`,
+      {
+        method: "GET",
+      }
+    );
+    const { data } = await res.json();
+    setProducts(data);
   };
 
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
-    return (
-      product.title.toLowerCase().includes(search.toLowerCase()) &&
-      product.visible
-    );
+    return product.attributes.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
   });
 
   const socialNetworks = [
-    {
-      url: "https://www.facebook.com/jallamulhouse",
-      icons: <FaFacebookF size={20} />,
-    },
     {
       url: "https://www.instagram.com/jallamulhouse/",
       icons: <FaInstagram size={20} />,
@@ -60,8 +64,8 @@ export default function NavBar() {
   ];
 
   const setHover = (menu: any, value: any) => {
-    const newMenu = menusList.map((m) => {
-      if (m.name === menu.name) {
+    const newMenu = menusList.map((m: any) => {
+      if (m.attributes.name === menu.attributes.name) {
         return { ...m, hover: value };
       } else {
         return { ...m, hover: false };
@@ -72,16 +76,19 @@ export default function NavBar() {
 
   useEffect(() => {
     const getPromoteMessage = async () => {
-      const res = await fetch("/api/general", {
-        method: "GET",
-      });
-      const general = await res.json();
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/general-information`,
+        {
+          method: "GET",
+        }
+      );
+      const { data } = await res.json();
 
-      if (!general) {
+      if (!data) {
         return;
       }
 
-      setPromoteMessage(general?.promoteMessage);
+      setPromoteMessage(data?.attributes.promoteMessage);
     };
     getPromoteMessage();
   }, []);
@@ -135,12 +142,16 @@ export default function NavBar() {
                             <Image
                               width={60}
                               height={60}
-                              src={product?.pictures[0]?.url}
+                              src={
+                                process.env.NEXT_PUBLIC_API_IMAGE_URL +
+                                product?.attributes.images.data[0].attributes
+                                  .url
+                              }
                               alt="Item"
                               className="object-cover rounded"
                             />
                             <p className="mx-2">
-                              {product.title.substr(0, 15)}...
+                              {product?.attributes.title.substr(0, 15)}...
                             </p>
                           </div>
                         </div>
@@ -159,47 +170,49 @@ export default function NavBar() {
                   onMouseLeave={() => setHover(menu, false)}
                 >
                   <Link
-                    href={"/search?q=" + menu.id}
+                    href={"/search?menu=" + menu.id}
                     className={
                       menu.hover
                         ? "underline underline-offset-2 " + "m-4 text-xl "
                         : "" + "m-4 text-xl "
                     }
                   >
-                    <p className="text-xl">{menu.name}</p>
+                    <p className="text-xl">{menu.attributes.name}</p>
                   </Link>
                   <div className="absolute top-14 z-50">
                     <div className="w-[200vw] bg-white flex flex-row justify-center">
                       {menu.hover &&
-                        menu.subMenu?.map((subMenu: any, index: any) => (
-                          <div
-                            key={index}
-                            className="flex flex-col items-center"
-                          >
-                            <Link
+                        menu.attributes.childs_menus.data?.map(
+                          (subMenu: any, index: any) => (
+                            <div
                               key={index}
-                              href={"/search?q=" + subMenu.id}
-                              className="mx-3 font-medium"
+                              className="flex flex-col items-center"
                             >
-                              <p className="text-lg font-bold ">
-                                {subMenu.name}
-                              </p>
-                            </Link>
-                            {subMenu.terMenu?.map(
-                              (terMenu: any, index: any) => (
-                                <Link
-                                  key={index}
-                                  href={"/search?q=" + terMenu.id}
-                                  className="m-1 font-medium "
-                                >
-                                  <p className="text-lg text-gray-700">
-                                    {terMenu.name}
-                                  </p>
-                                </Link>
-                              )
-                            )}
-                          </div>
-                        ))}
+                              <Link
+                                key={index}
+                                href={"/search?submenu=" + subMenu.id}
+                                className="mx-3 font-medium"
+                              >
+                                <p className="text-lg font-bold ">
+                                  {subMenu.attributes.name}
+                                </p>
+                              </Link>
+                              {subMenu.attributes.childs_menus.data?.map(
+                                (terMenu: any, index: any) => (
+                                  <Link
+                                    key={index}
+                                    href={"/search?termenu=" + terMenu.id}
+                                    className="m-1 font-medium "
+                                  >
+                                    <p className="text-lg text-gray-700">
+                                      {terMenu.attributes.name}
+                                    </p>
+                                  </Link>
+                                )
+                              )}
+                            </div>
+                          )
+                        )}
                     </div>
                   </div>
                 </div>

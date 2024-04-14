@@ -24,6 +24,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+interface catalogAndVideo {
+  id?: string;
+  menuId: string | undefined;
+  menuName?: string | undefined;
+  urlCatalog: string | undefined;
+  urlVideo: string | undefined;
+}
+
+// todo : création de video et catalog OK
+
+// todo : afficher la vidéo et le catalogue dans la page de recherche
+// todo : ajouter un bouton pour supprimer la vidéo et le catalogue
+// todo : ajouter un bouton pour modifier la vidéo et le catalogue
+// todo : lister les vidéos et les catalogues dans la page
+
 export default function MenuForm() {
   const { handleSubmit } = useForm();
   //var
@@ -34,6 +49,14 @@ export default function MenuForm() {
   const [fatherMenuTerMenu, setFatherMenuTerMenu] = useState<string>();
   const [menus, setMenus] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [catalogAndVideo, setCatalogAndVideo] = useState<catalogAndVideo>({
+    menuId: "",
+    urlCatalog: "",
+    urlVideo: "",
+  });
+  const [catalogsAndVideos, setCatalogsAndVideos] = useState<catalogAndVideo[]>(
+    []
+  );
 
   //fetch
   useEffect(() => {
@@ -48,8 +71,29 @@ export default function MenuForm() {
       method: "GET",
     });
     const data = await res.json();
+
+    console.log(data);
+
     setMenus(data);
     setLoading(true);
+
+    data.forEach((element: any) => {
+      if (element.catalogAndVideo == null) {
+        return;
+      }
+      console.log(element);
+
+      setCatalogsAndVideos([
+        ...catalogsAndVideos,
+        {
+          id: element.catalogAndVideo.id,
+          menuId: element.catalogAndVideo.menuId,
+          menuName: element.name,
+          urlCatalog: element.catalogAndVideo.urlCatalog,
+          urlVideo: element.catalogAndVideo.urlVideo,
+        },
+      ]);
+    });
   };
 
   const formatMenu = (menus: any) => {
@@ -91,7 +135,6 @@ export default function MenuForm() {
     terMenuList.forEach((tm: any) => {
       delete tm.grandFatherMenu;
     });
-    console.log(menuList, subMenuList, terMenuList);
 
     toast.promise(
       fetch("/api/menu", {
@@ -100,6 +143,7 @@ export default function MenuForm() {
           menuList,
           subMenuList,
           terMenuList,
+          catalogAndVideo,
         }),
       }),
       {
@@ -348,9 +392,150 @@ export default function MenuForm() {
         </Button>
       </div>
 
+      <HeaderTitle
+        title="Catalogues & Vidéos"
+        subtitle="Vous pouvez définir pour un menu parent un catalogue et une vidéo."
+      />
+      <Select
+        onValueChange={(e) => {
+          setCatalogAndVideo({ ...catalogAndVideo, menuId: e });
+        }}
+      >
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Choisir" />
+        </SelectTrigger>
+        <SelectContent>
+          {menuList.map((m: Menu, i) => (
+            <SelectItem value={m.id.toString()} key={i}>
+              {m.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+
+      <div className="max-w-md">
+        <Input
+          defaultValue={catalogAndVideo?.urlVideo}
+          placeholder="Entrez le lien embed de la vidéo..."
+          onChange={(e) =>
+            setCatalogAndVideo({ ...catalogAndVideo, urlVideo: e.target.value })
+          }
+        />
+        <Input
+          defaultValue={catalogAndVideo?.urlCatalog}
+          placeholder="Entrez le lien du catalogue..."
+          onChange={(e) =>
+            setCatalogAndVideo({
+              ...catalogAndVideo,
+              urlCatalog: e.target.value,
+            })
+          }
+        />
+      </div>
+
       <div>
         <Button type="submit">Enregistrer</Button>
+      </div>
+
+      <div className="w-full flex-wrap">
+        {catalogsAndVideos?.map((c, i) => (
+          <CatalogAndVideo key={i} c={c} />
+        ))}
       </div>
     </form>
   );
 }
+
+interface CatalogAndVideoProps {
+  c: catalogAndVideo;
+}
+
+const CatalogAndVideo: React.FC<CatalogAndVideoProps> = ({ c }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState(c);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    console.log("totot",editedItem);
+    fetch("/api/menu/catalogAndVideo", {
+      method: "PUT",
+      body: JSON.stringify({
+        id: editedItem.id,
+        urlCatalog: editedItem.urlCatalog,
+        urlVideo: editedItem.urlVideo,
+      }),
+    }),
+      setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    fetch("/api/menu/catalogAndVideo", {
+      method: "DELETE",
+      body: JSON.stringify({
+        id: editedItem.id,
+      }),
+    });
+    //onDelete(c.id); // Suppose que c a une propriété id
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: keyof catalogAndVideo
+  ) => {
+    setEditedItem({ ...editedItem, [field]: e.target.value });
+  };
+
+  return (
+    <div className="flex items-end">
+      <div>
+        <label htmlFor="menuName">Menu Name:</label>
+        <Input
+          id="menuName"
+          value={editedItem.menuName}
+          disabled={true}
+          onChange={(e) => handleChange(e, "menuName")}
+        />
+      </div>
+      <div>
+        <label htmlFor="urlCatalog">Catalog URL:</label>
+        <Input
+          id="urlCatalog"
+          value={editedItem.urlCatalog}
+          disabled={!isEditing}
+          onChange={(e) => handleChange(e, "urlCatalog")}
+        />
+      </div>
+      <div>
+        <label htmlFor="urlVideo">Video URL:</label>
+        <Input
+          id="urlVideo"
+          value={editedItem.urlVideo}
+          disabled={!isEditing}
+          onChange={(e) => handleChange(e, "urlVideo")}
+        />
+      </div>
+      {isEditing ? (
+        <>
+          <Button className="mr-2" variant={"default"} onClick={handleSave}>
+            Enregistrer
+          </Button>
+          <Button variant={"destructive"} onClick={() => setIsEditing(false)}>
+            Annuler
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button className="mr-2" variant={"default"} onClick={handleEdit}>
+            Modifier
+          </Button>
+          <Button variant={"destructive"} onClick={handleDelete}>
+            Supprimer
+          </Button>
+        </>
+      )}
+    </div>
+  );
+};

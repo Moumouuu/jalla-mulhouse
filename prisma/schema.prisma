@@ -69,10 +69,20 @@ model General {
 }
 
 model Menu {
-  id      Int       @id @default(autoincrement())
-  name    String
-  subMenu SubMenu[]
-  createdAt DateTime @default(now())
+  id              Int              @id @default(autoincrement())
+  name            String
+  subMenu         SubMenu[]
+  createdAt       DateTime         @default(now())
+  catalogAndVideo CatalogAndVideo?
+}
+
+model CatalogAndVideo {
+  id         Int    @id @default(autoincrement())
+  urlVideo   String
+  urlCatalog String
+  // one to one with Menu
+  menu       Menu   @relation(fields: [menuId], references: [id])
+  menuId     Int    @unique
 }
 
 model SubMenu {

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
 import { Product } from "@prisma/client";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import ProductCard from "../ProductCard";
@@ -42,6 +43,7 @@ export default function SearchPage() {
   };
 
   const fetchMenu = useCallback(async () => {
+    // todo : get video & catalog from menu
     const res = await fetch(`/api/menu?id=${menuId}`, {
       method: "GET",
     });
@@ -50,7 +52,6 @@ export default function SearchPage() {
   }, [menuId]);
 
   const orderProduct = (e: any) => {
-    console.log(products);
     switch (e) {
       case "1":
         //order ASC price
@@ -126,6 +127,42 @@ export default function SearchPage() {
           products.map((product: Product) => (
             <ProductCard itemProduct={product} key={product.id} />
           ))}
+      </div>
+
+      <div className="w-full flex flex-col lg:flex-row justify-around">
+        <div className="flex-col">
+          <h3
+            className={
+              italiana.className + " text-xl lg:text-3xl text-white uppercase"
+            }
+          >
+            Vidéo de présentation
+          </h3>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/3IQLXvF7Cbs?si=K0prU8wKsL_hYFff"
+            title="YouTube video player"
+            // @ts-ignore
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <div className="flex-col">
+          <h3
+            className={
+              italiana.className + " text-xl lg:text-3xl text-white uppercase"
+            }
+          >
+            Catalogue
+          </h3>
+          <Link href="/catalogue" className="underline text-blue-400">
+            Voir le catalogue
+          </Link>
+        </div>
       </div>
     </div>
   );
