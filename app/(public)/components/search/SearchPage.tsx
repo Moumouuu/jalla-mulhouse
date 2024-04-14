@@ -72,7 +72,6 @@ export default function SearchPage() {
     );
 
     const { data } = await res.json();
-    console.log(data);
 
     setMenuName(data.attributes.name);
 

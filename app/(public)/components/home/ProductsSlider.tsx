@@ -21,7 +21,6 @@ export default function ProductsSlider() {
     );
     const items = await res.json();
     setNewItems(items);
-    console.log(items);
   };
 
   const fetchSelectedItems = async () => {

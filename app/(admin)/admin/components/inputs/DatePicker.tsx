@@ -18,7 +18,6 @@ interface DatePickerProps {
 }
 
 export function DatePicker({ date, setDate }: DatePickerProps) {
-  console.log(typeof date);
 
   //format date like this : 2023-08-23T22:00:00.000Z but not for date like this : 2023-07-29T22:00:00.000Z
   const formatDate = (date: Date) => {

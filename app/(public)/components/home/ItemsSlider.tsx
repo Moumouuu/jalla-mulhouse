@@ -9,7 +9,7 @@ interface ItemsSliderProps {
 }
 
 export default function ItemsSlider({ label, items }: ItemsSliderProps) {
-  if (items?.length === 0) {
+  if (items.data?.length === 0) {
     return null;
   }
 

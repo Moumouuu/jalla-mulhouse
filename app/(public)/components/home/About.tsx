@@ -19,8 +19,6 @@ export default function About() {
       );
       const { data } = await res.json();
 
-      console.log(data);
-
       setGeneral(data.attributes);
       setIsLoading(false);
     };

@@ -72,8 +72,6 @@ export default function MenuForm() {
     });
     const data = await res.json();
 
-    console.log(data);
-
     setMenus(data);
     setLoading(true);
 
@@ -81,8 +79,6 @@ export default function MenuForm() {
       if (element.catalogAndVideo == null) {
         return;
       }
-      console.log(element);
-
       setCatalogsAndVideos([
         ...catalogsAndVideos,
         {

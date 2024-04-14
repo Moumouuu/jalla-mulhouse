@@ -19,8 +19,6 @@ export default function Carousel() {
       );
       const { data } = await res.json();
 
-      console.log(data);
-
       setGeneral(data.attributes.images.data);
       setIsLoading(false);
     };

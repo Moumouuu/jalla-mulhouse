@@ -13,8 +13,6 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     return price - (price * discount) / 100;
   };
 
-  console.log(item);
-
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
     const startDate = new Date(

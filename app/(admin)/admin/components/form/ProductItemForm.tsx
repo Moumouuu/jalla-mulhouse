@@ -56,7 +56,6 @@ export default function ProductItemForm({ productItem }: ProductItemFormProps) {
   useEffect(() => {
     fetchData();
     formatMenuList();
-    console.log(files);
   }, [loading, files]);
 
   //method
