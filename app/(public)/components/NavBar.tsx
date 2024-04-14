@@ -30,7 +30,6 @@ export default function NavBar() {
     );
     const { data } = await res.json();
 
-    console.log(data);
     setMenusList(data);
   };
 

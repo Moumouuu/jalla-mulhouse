@@ -26,11 +26,11 @@ export default function NavBarMobile() {
 
   const filteredProducts = products.filter((product: any) => {
     // filtered with search & if product is visible
-    return (
-      product.title.toLowerCase().includes(search.toLowerCase()) &&
-      product.visible
-    );
+    return product.attributes.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
   });
+
   const socialNetworks = [
     {
       url: "https://www.facebook.com/jallamulhouse",
@@ -53,42 +53,49 @@ export default function NavBarMobile() {
   }, []);
 
   const getPromoteMessage = async () => {
-    const res = await fetch("/api/general/mobile", {
-      method: "GET",
-    });
-    const general = await res.json();
-    console.log(general)
-    if (!general) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/general-information`,
+      {
+        method: "GET",
+      }
+    );
+    const { data } = await res.json();
+
+    if (!data) {
       return;
     }
-    setPromoteMessage(general?.promoteMessageMobile);
+
+    setPromoteMessage(data?.attributes.promoteMessage);
   };
 
   const getMenus = async () => {
-    const res = await fetch("/api/menu/all", {
-      method: "GET",
-    });
-    const menus = await res.json();
-    setMenusList(menus);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menus?populate=deep`,
+      {
+        method: "GET",
+      }
+    );
+    const { data } = await res.json();
+
+    setMenusList(data);
   };
 
   const getProducts = async () => {
-    const res = await fetch("/api/products/search", {
-      method: "GET",
-    });
-    const products = await res.json();
-    setProducts(products);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/products?populate=images`,
+      {
+        method: "GET",
+      }
+    );
+    const { data } = await res.json();
+    setProducts(data);
   };
+
   return (
     <>
       {promoteMessage && (
         <div className="w-full bg-white text-center p-2 text-xl border-b-2 overflow-x-hidden">
-          <p
-            className={cn(
-              italiana.className,
-              "whitespace-nowrap"
-            )}
-          >
+          <p className={cn(italiana.className, "whitespace-nowrap")}>
             {promoteMessage}
           </p>
         </div>
@@ -123,39 +130,41 @@ export default function NavBarMobile() {
                         <>
                           <Link
                             key={index}
-                            href={"/search?q=" + menu.id}
+                            href={"/search?menu=" + menu.id}
                             className={"my-3 w-full bg-black/10"}
                           >
                             <p className="text-xl uppercase text-center">
-                              {menu.name}
+                              {menu.attributes.name}
                             </p>
                           </Link>
-                          {menu.subMenu?.map((subMenu: any, index: any) => (
-                            <>
-                              <Link
-                                key={index}
-                                href={"/search?q=" + subMenu.id}
-                                className={"my-2"}
-                              >
-                                <p className="text-lg uppercase underline underline-offset-2">
-                                  {subMenu.name}
-                                </p>
-                              </Link>
-                              {subMenu.terMenu?.map(
-                                (terMenu: any, index: any) => (
-                                  <Link
-                                    key={index}
-                                    href={"/search?q=" + terMenu.id}
-                                    className={"my-2"}
-                                  >
-                                    <p className="text-lg text-gray-700 ml-4">
-                                      {terMenu.name}
-                                    </p>
-                                  </Link>
-                                )
-                              )}
-                            </>
-                          ))}
+                          {menu.attributes.childs_menus.data?.map(
+                            (subMenu: any, index: any) => (
+                              <>
+                                <Link
+                                  key={index}
+                                  href={"/search?submenu=" + subMenu.id}
+                                  className={"my-2"}
+                                >
+                                  <p className="text-lg uppercase underline underline-offset-2">
+                                    {subMenu.attributes.name}
+                                  </p>
+                                </Link>
+                                {subMenu.attributes.childs_menus.data?.map(
+                                  (terMenu: any, index: any) => (
+                                    <Link
+                                      key={index}
+                                      href={"/search?q=" + terMenu.id}
+                                      className={"my-2"}
+                                    >
+                                      <p className="text-lg text-gray-700 ml-4">
+                                        {terMenu.attributes.name}
+                                      </p>
+                                    </Link>
+                                  )
+                                )}
+                              </>
+                            )
+                          )}
                         </>
                       ))}
                     </div>
