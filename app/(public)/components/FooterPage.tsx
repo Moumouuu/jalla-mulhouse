@@ -16,13 +16,16 @@ export default function FooterPage() {
   const [hour, setHour] = useState<string>("");
 
   useEffect(() => {
-    const res = fetch("/api/general", {
-      method: "GET",
-    });
+    const res = fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/general-information`,
+      {
+        method: "GET",
+      }
+    );
     res
       .then((res) => res.json())
-      .then((data) => {
-        setHour(data.hour);
+      .then(({ data }) => {
+        setHour(data.attributes.hour);
       });
   }, []);
 
