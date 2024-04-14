@@ -24,7 +24,7 @@ export default function NavBarMobile() {
   const [menus, setMenusList] = useState<Menu[]>([]);
   const [products, setProducts] = useState<any>([]);
 
-  const filteredProducts = products.filter((product: any) => {
+  const filteredProducts = products?.filter((product: any) => {
     // filtered with search & if product is visible
     return product.attributes.title
       .toLowerCase()

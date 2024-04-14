@@ -46,7 +46,7 @@ export default function ProductCard({ itemProduct }: ItemProps) {
       <div className="h-full w-full flex justify-center">
         <img
           src={
-            process.env.NEXT_PUBLIC_API_IMAGE_URL +
+
             item.attributes.images.data[0]?.attributes?.url
           }
           alt="Item"

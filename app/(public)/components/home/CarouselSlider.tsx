@@ -37,7 +37,7 @@ export default function CarouselSlider({
         <div key={index}>
           <img
             alt="Carousel picture"
-            src={process.env.NEXT_PUBLIC_API_IMAGE_URL + image.attributes?.url}
+            src={image.attributes?.url}
             className="h-full"
           />
         </div>

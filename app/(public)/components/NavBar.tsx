@@ -44,7 +44,7 @@ export default function NavBar() {
     setProducts(data);
   };
 
-  const filteredProducts = products.filter((product: any) => {
+  const filteredProducts = products?.filter((product: any) => {
     // filtered with search & if product is visible
     return product.attributes.title
       .toLowerCase()
@@ -142,7 +142,7 @@ export default function NavBar() {
                               width={60}
                               height={60}
                               src={
-                                process.env.NEXT_PUBLIC_API_IMAGE_URL +
+                                
                                 product?.attributes.images.data[0].attributes
                                   .url
                               }
