@@ -37,28 +37,13 @@ export default function SearchPage() {
 
   //fetch
   useEffect(() => {
-    //getProducts();
     fetchMenu();
   }, [menuId]);
 
   //functions
-  const getProducts = async () => {
-    setLoading(true);
-
-    const res = await fetch("api/products/search", {
-      method: "POST",
-      body: JSON.stringify({ menuId }),
-    }).then((res) => res.json());
-
-    const data = await res;
-    setProducts(data.products);
-    setMenuName(data.menu.name);
-    setLoading(false);
-  };
 
   const fetchMenu = useCallback(async () => {
     setLoading(true);
-    // todo : get video & catalog from menu
     let category;
     if (isFistMenu) category = "menus";
     if (isSubmenu) category = "sub-menus";
@@ -165,11 +150,7 @@ export default function SearchPage() {
           >
             {menuName}
           </h3>
-          <span
-            className={julius.className + " text-sm lg:text-md text-gray-500 "}
-          >
-            {products.length} résultats
-          </span>
+
         </div>
         <Select onValueChange={(e) => orderProduct(e)}>
           <SelectTrigger className="w-[180px]">
@@ -184,17 +165,6 @@ export default function SearchPage() {
           </SelectContent>
         </Select>
       </div>
-
-      {products.length === 0 && (
-        <span
-          className={
-            julius.className +
-            " text-2xl text-gray-500 text-center py-4 lg:pt-8"
-          }
-        >
-          Aucun résultat
-        </span>
-      )}
 
       <div className="text-black grid justify-items-center my-5 lg:my-8 gap-3 md:gap-5 lg:gap-10 grid-cols-1 md:grid-cols-3 ">
         {products.length > 0 &&
