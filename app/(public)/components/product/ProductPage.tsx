@@ -36,30 +36,30 @@ export default function ProductPage({ item }: ProductPageProps) {
   };
 
   const calculatePromotion = useMemo(() => {
-    const height = product?.attributes?.heights.data?.find(
+    const height = product?.attributes?.heights?.data?.find(
       (height: any) => height.id === heightSelected
     );
 
     if (height && product.attributes.promotion.data) {
       return (
-        height.attributes.price -
-        (height.attributes.price *
+        height.attributes?.price -
+        (height.attributes?.price *
           product.attributes?.promotion.data.attributes?.discount) /
           100
       );
     }
-    return product?.attributes?.heights.data[0].attributes.price;
+    return product?.attributes?.heights?.data[0]?.attributes?.price;
   }, [heightSelected, product]);
 
   const priceByHeight = useCallback(() => {
-    const height = product.attributes.heights.data?.find(
+    const height = product.attributes.heights?.data?.find(
       (height: any) => height.id === heightSelected
     );
 
     if (height) {
-      return height.attributes.price;
+      return height.attributes?.price;
     }
-    return product.attributes.heights.data[0].attributes.price;
+    return product.attributes.heights?.data[0]?.attributes?.price;
   }, [heightSelected, product]);
 
   return (
@@ -94,7 +94,7 @@ export default function ProductPage({ item }: ProductPageProps) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {product.attributes.heights.data?.map(
+                    {product.attributes.heights?.data?.map(
                       (height: any, index: any) => (
                         <SelectItem key={index} value={height.id}>
                           {height.attributes.height}
@@ -114,7 +114,7 @@ export default function ProductPage({ item }: ProductPageProps) {
                   : " " + " text-3xl")
               }
             >
-              {priceByHeight()}€
+              {priceByHeight() && '€'}
             </span>
             {product.attributes.promotion.data && (
               <span className={italiana.className + " text-3xl"}>

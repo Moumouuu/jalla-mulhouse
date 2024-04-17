@@ -222,12 +222,14 @@ export default function NavBarMobile() {
                         <Image
                           width={60}
                           height={60}
-                          src={product?.pictures[0]?.url}
+                          src={
+                            product?.attributes.images.data[0].attributes.url
+                          }
                           alt="Item"
                           className="object-cover rounded"
                         />
                         <p className="mx-2 text-black">
-                          {product.title.substr(0, 15)}...
+                          {product?.attributes.title.substr(0, 15)}...
                         </p>
                       </div>
                     </div>

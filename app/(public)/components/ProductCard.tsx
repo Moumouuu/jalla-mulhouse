@@ -18,7 +18,9 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     const startDate = new Date(
       item.attributes.promotion.data?.attributes?.launchDay
     );
-    const endDate = new Date(item.attributes.promotion.data?.attributes?.endDay);
+    const endDate = new Date(
+      item.attributes.promotion.data?.attributes?.endDay
+    );
 
     // already available
     if (currentDate > startDate && currentDate < endDate) {
@@ -37,7 +39,6 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     promoAlreadyAvailable();
   }, []);
 
-
   return (
     <Link
       href={`/product/${item.id}`}
@@ -45,10 +46,7 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     >
       <div className="h-full w-full flex justify-center">
         <img
-          src={
-
-            item.attributes.images.data[0]?.attributes?.url
-          }
+          src={item.attributes.images.data[0]?.attributes?.url}
           alt="Item"
           className="object-cover"
         />
@@ -88,12 +86,12 @@ export default function ProductCard({ itemProduct }: ItemProps) {
               (item.attributes.promotion.data ? ` line-through` : " ")
             }
           >
-            {item.attributes.heights.data[0]?.attributes?.price}€
+            {item.attributes.heights?.data[0]?.attributes?.price && "€"}
           </p>
           {item.attributes.promotion.data && (
             <p className={italiana.className}>
               {calculatePromotion(
-                item.attributes.heights.data[0]?.attributes?.price,
+                item.attributes.heights?.data[0]?.attributes?.price,
                 item.attributes.promotion.data?.attributes.discount
               )}
               €
