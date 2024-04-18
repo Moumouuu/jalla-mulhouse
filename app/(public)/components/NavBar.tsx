@@ -94,15 +94,8 @@ export default function NavBar() {
   return (
     <>
       {promoteMessage && (
-        <div className=" bg-white p-2 text-2xl border-b-2  ">
-          <span
-            className={cn(
-              italiana.className,
-              "animate-marquee inline-block [--duration:20s] [--gap:0rem] [gap:var(--gap)]"
-            )}
-          >
-            {promoteMessage}
-          </span>
+        <div className=" bg-white p-2 text-2xl border-b-2 marquee-rtl">
+          <span className={cn(italiana.className, "")}>{promoteMessage}</span>
         </div>
       )}
       <div className={`bg-white p-3 w-screen ` + italiana.className}>

@@ -95,9 +95,7 @@ export default function NavBarMobile() {
     <>
       {promoteMessage && (
         <div className="w-full bg-white text-center p-2 text-xl border-b-2 overflow-x-hidden">
-          <p className={cn(italiana.className, "whitespace-nowrap")}>
-            {promoteMessage}
-          </p>
+          <p className={cn(italiana.className)}>{promoteMessage}</p>
         </div>
       )}
       <div
