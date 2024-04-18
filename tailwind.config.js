@@ -3,12 +3,12 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-    'flowbite-react'
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+    "flowbite-react",
+  ],
   theme: {
     container: {
       center: true,
@@ -67,17 +67,17 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
-        "banner-slide": {
-          "0%": { transform: "translateX(100%)" },
-          "100%": { transform: "translateX(-200%)" },
-        }
+        marquee: {
+          from: { transform: "translateX(230%)" },
+          to: { transform: "translateX(calc(-100% - var(--gap)))" },
+        },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
+        marquee: "marquee var(--duration) linear infinite",
         "accordion-up": "accordion-up 0.2s ease-out",
         "banner-slide": "banner-slide 25s linear infinite",
       },
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};

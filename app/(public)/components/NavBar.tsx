@@ -14,7 +14,6 @@ export default function NavBar() {
   const [search, setSearch] = useState<string>("");
   const [promoteMessage, setPromoteMessage] = useState<any>("");
   const [products, setProducts] = useState<any>([]);
-  const [hoveredMenu, setHoveredMenu] = useState<string>("");
 
   useEffect(() => {
     getMenus();
@@ -92,20 +91,18 @@ export default function NavBar() {
     getPromoteMessage();
   }, []);
 
-  console.log(filteredProducts);
-
   return (
     <>
       {promoteMessage && (
-        <div className="w-full bg-white p-2 text-2xl border-b-2 overflow-x-hidden">
-          <p
+        <div className=" bg-white p-2 text-2xl border-b-2  ">
+          <span
             className={cn(
               italiana.className,
-              "animate-banner-slide whitespace-nowrap"
+              "animate-marquee inline-block [--duration:20s] [--gap:0rem] [gap:var(--gap)]"
             )}
           >
             {promoteMessage}
-          </p>
+          </span>
         </div>
       )}
       <div className={`bg-white p-3 w-screen ` + italiana.className}>
@@ -144,7 +141,6 @@ export default function NavBar() {
                               width={60}
                               height={60}
                               src={
-
                                 product?.attributes.images.data[0].attributes
                                   .url
                               }
