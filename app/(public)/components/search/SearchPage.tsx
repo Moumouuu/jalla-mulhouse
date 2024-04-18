@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { italiana, julius } from "@/utils/font";
+import { italiana } from "@/utils/font";
 import { Product } from "@prisma/client";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -141,29 +141,28 @@ export default function SearchPage() {
 
   return (
     <div className="flex flex-col mx-2 lg:mx-5 text-white">
-      <div className="flex  justify-between">
-        <div className="flex flex-col">
-          <h3
-            className={
-              italiana.className + " text-xl lg:text-3xl text-white uppercase"
-            }
-          >
-            {menuName}
-          </h3>
-
+      <div className="flex justify-center w-full relative">
+        <h3
+          className={
+            italiana.className + " text-xl lg:text-3xl text-white uppercase"
+          }
+        >
+          {menuName}
+        </h3>
+        <div className="absolute top-10  md:right-5 md:top-0">
+          <Select onValueChange={(e) => orderProduct(e)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Trier" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="1">Prix ASC</SelectItem>
+                <SelectItem value="2">Prix DESC</SelectItem>
+                <SelectItem value="3">Date d&apos;ajout</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
-        <Select onValueChange={(e) => orderProduct(e)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Trier" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="1">Prix ASC</SelectItem>
-              <SelectItem value="2">Prix DESC</SelectItem>
-              <SelectItem value="3">Date d&apos;ajout</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
       </div>
 
       <div className="text-black grid justify-items-center my-5 lg:my-8 gap-3 md:gap-5 lg:gap-10 grid-cols-1 md:grid-cols-3 ">
@@ -173,7 +172,7 @@ export default function SearchPage() {
           ))}
       </div>
 
-      <div className="w-full flex flex-col lg:flex-row justify-around">
+      <div className="w-full flex flex-col mt-10 md:mt-0 lg:flex-row justify-around">
         {urlVideo && (
           <div className="flex-col">
             <h3
@@ -184,7 +183,8 @@ export default function SearchPage() {
               Vidéo de présentation
             </h3>
             <iframe
-              width="560"
+              className="w-full md:w-[800px]"
+              width="100%"
               height="315"
               src={urlVideo}
               title="YouTube video player"
@@ -198,7 +198,7 @@ export default function SearchPage() {
         )}
 
         {urlCatalog && (
-          <div className="flex-col">
+          <div className="flex-col mt-5 md:mt-0">
             <h3
               className={
                 italiana.className + " text-xl lg:text-3xl text-white uppercase"

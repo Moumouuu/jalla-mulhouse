@@ -92,6 +92,8 @@ export default function NavBar() {
     getPromoteMessage();
   }, []);
 
+  console.log(filteredProducts);
+
   return (
     <>
       {promoteMessage && (

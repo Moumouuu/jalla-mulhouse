@@ -46,7 +46,10 @@ export default function ProductCard({ itemProduct }: ItemProps) {
     >
       <div className="h-full w-full flex justify-center">
         <img
-          src={item.attributes.images.data[0]?.attributes?.url}
+          src={
+            item.attributes.images.data &&
+            item.attributes.images.data[0]?.attributes?.url
+          }
           alt="Item"
           className="object-cover"
         />
