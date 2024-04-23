@@ -1,6 +1,6 @@
 export default async function GetProducts() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/products?populate=deep`,
+    `${process.env.NEXT_PUBLIC_API_URL}/products?populate=*`,
     {
       method: "GET",
     }
