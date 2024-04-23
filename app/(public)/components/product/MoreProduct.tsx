@@ -15,6 +15,7 @@ export default function MoreProduct({
   const productListFiltered = purposeProduct?.filter(
     (product: any) => product.id !== currentProductId
   );
+  console.log("purposeProduct", purposeProduct);
 
   if (productListFiltered.length === 0) {
     return (
