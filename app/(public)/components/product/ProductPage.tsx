@@ -114,7 +114,7 @@ export default function ProductPage({ item }: ProductPageProps) {
                   : " " + " text-3xl")
               }
             >
-              {priceByHeight() && '€'}
+              {priceByHeight()} €
             </span>
             {product.attributes.promotion.data && (
               <span className={italiana.className + " text-3xl"}>

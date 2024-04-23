@@ -89,7 +89,9 @@ export default function ProductCard({ itemProduct }: ItemProps) {
               (item.attributes.promotion.data ? ` line-through` : " ")
             }
           >
-            {item.attributes.heights?.data[0]?.attributes?.price && "€"}
+            {item.attributes.heights?.data[0]?.attributes?.price &&
+              item.attributes.heights?.data[0]?.attributes?.price}
+            €
           </p>
           {item.attributes.promotion.data && (
             <p className={italiana.className}>
