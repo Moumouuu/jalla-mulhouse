@@ -53,7 +53,8 @@ export default function ProductCard({ itemProduct }: ItemProps) {
           }
           alt="Item"
           width={200}
-            height={200}
+          height={200}
+          className={"object-contain"}
         />
       </div>
       <div className="flex w-full p-2 m-2 justify-between">
