@@ -39,7 +39,7 @@ export default function MoreProduct({
         >
           Ces produits pourraient vous intéresser
         </h3>
-        <div className="w-full grid grid-flow-col gap-4 lg:gap-6 overflow-x-auto">
+        <div className="w-full grid grid-flow-col gap-4 overflow-x-auto">
           {productListFiltered?.splice(0, 5).map((product: any, index: any) => (
             <ProductCard key={index} itemProduct={product} />
           ))}

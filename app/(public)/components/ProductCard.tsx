@@ -2,6 +2,7 @@
 import { italiana, julius } from "@/utils/font";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 interface ItemProps {
   itemProduct: any;
@@ -42,16 +43,17 @@ export default function ProductCard({ itemProduct }: ItemProps) {
   return (
     <Link
       href={`/product/${item.id}`}
-      className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2 w-[200px] lg:w-[300px]"
+      className="pointer flex flex-col bg-white rounded-lg items-center justify-center p-2 w-[200px] h-[400px] lg:w-[300px]"
     >
-      <div className="h-full w-full flex justify-center">
-        <img
+      <div className="overflow-hidden h-full w-full flex justify-center">
+        <Image
           src={
             item.attributes.images.data &&
             item.attributes.images.data[0]?.attributes?.url
           }
           alt="Item"
-          className="object-cover"
+          width={200}
+            height={200}
         />
       </div>
       <div className="flex w-full p-2 m-2 justify-between">
