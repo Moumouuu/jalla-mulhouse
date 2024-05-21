@@ -3,6 +3,7 @@ export default async function GetProduct(id: Number) {
     `${process.env.NEXT_PUBLIC_API_URL}/products/${id}?populate=deep`,
     {
       method: "GET",
+      cache: "no-cache",
     }
   );
   const { data } = await res.json();
