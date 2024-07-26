@@ -98,7 +98,7 @@ export default function FooterPage() {
       </div>
       <div className="px-3 w-full bg-white">
         <Link
-          href={"https://admin.jalla-mulhouse.fr/admin"}
+          href={"https://g0sg0ko.5.75.226.51.sslip.io/admin"}
           className={italiana.className + " underline underline-offset-2 my-2"}
         >
           Admin
