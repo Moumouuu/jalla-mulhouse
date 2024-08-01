@@ -9,16 +9,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { italiana, julius } from "@/utils/font";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Remarkable } from "remarkable";
 import CarouselSlider from "../home/CarouselSlider";
-
 interface ProductPageProps {
   item: any;
 }
 
 export default function ProductPage({ item }: ProductPageProps) {
   const [heightSelected, setHeightSelected] = useState<string>("");
-  const [product, setProduct] = useState<any>(item);
+  const [product] = useState<any>(item);
+  var md = new Remarkable("full", {
+    html: true,
+  });
+  const htmlDescription = md.render(product?.attributes?.description);
+
+  //  inject html desc in the dom with the id description
+  useEffect(() => {
+    document
+      .getElementById("description")
+      ?.insertAdjacentHTML("beforeend", htmlDescription);
+  }, [product]);
 
   const promoAlreadyAvailable = () => {
     const currentDate = new Date();
@@ -128,9 +139,7 @@ export default function ProductPage({ item }: ProductPageProps) {
           <h3 className={italiana.className + " text-2xl lg:text-3xl mb-3"}>
             Description du produit
           </h3>
-          <p className={italiana.className + " text-lg whitespace-pre-line"}>
-            {product.attributes.description}
-          </p>
+          <div id="description" className={"text-lg whitespace-pre-line"}></div>
         </div>
       </div>
     </div>

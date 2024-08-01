@@ -2,6 +2,7 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -126,38 +127,46 @@ export default function NavBarMobile() {
                     <div className="flex flex-col text-black text-left ">
                       {menus?.map((menu: any, index: any) => (
                         <>
-                          <Link
-                            key={index}
-                            href={"/search?menu=" + menu.id}
-                            className={"my-3 w-full bg-black/10"}
-                          >
-                            <p className="text-xl uppercase text-center">
-                              {menu.attributes.name}
-                            </p>
-                          </Link>
+                          <SheetClose asChild>
+                            <Link
+                              key={index}
+                              href={"/search?menu=" + menu.id}
+                              className={"my-3 w-full bg-black/10"}
+                            >
+                              <p className="text-xl uppercase text-center">
+                                {menu.attributes.name}
+                              </p>
+                            </Link>
+                          </SheetClose>
                           {menu.attributes.childs_menus.data?.map(
                             (subMenu: any, index: any) => (
                               <>
-                                <Link
-                                  key={index}
-                                  href={"/search?submenu=" + subMenu.id}
-                                  className={"my-2"}
-                                >
-                                  <p className="text-lg uppercase underline underline-offset-2">
-                                    {subMenu.attributes.name}
-                                  </p>
-                                </Link>
+                                <SheetClose asChild>
+                                  <Link
+                                    key={index}
+                                    href={"/search?submenu=" + subMenu.id}
+                                    className={"my-2"}
+                                  >
+                                    <p className="text-lg uppercase underline underline-offset-2">
+                                      {subMenu.attributes.name}
+                                    </p>
+                                  </Link>
+                                </SheetClose>
                                 {subMenu.attributes.childs_menus.data?.map(
                                   (terMenu: any, index: any) => (
-                                    <Link
-                                      key={index}
-                                      href={"/search?q=" + terMenu.id}
-                                      className={"my-2"}
-                                    >
-                                      <p className="text-lg text-gray-700 ml-4">
-                                        {terMenu.attributes.name}
-                                      </p>
-                                    </Link>
+                                    <>
+                                      <SheetClose asChild>
+                                        <Link
+                                          key={index}
+                                          href={"/search?q=" + terMenu.id}
+                                          className={"my-2"}
+                                        >
+                                          <p className="text-lg text-gray-700 ml-4">
+                                            {terMenu.attributes.name}
+                                          </p>
+                                        </Link>
+                                      </SheetClose>
+                                    </>
                                   )
                                 )}
                               </>
