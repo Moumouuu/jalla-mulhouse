@@ -98,7 +98,7 @@ export default function FooterPage() {
       </div>
       <div className="px-3 w-full bg-white">
         <Link
-          href={"https://admin.jalla-mulhouse.fr/admin"}
+          href={"https://g0sg0ko.49.13.158.142.sslip.io/admin"}
           className={italiana.className + " underline underline-offset-2 my-2"}
         >
           Admin
@@ -116,7 +116,7 @@ export default function FooterPage() {
             </Link>
           </p>
           <p className={italiana.className + " text-sm my-2"}>
-            Copyright © 2024 - All right reserved by Jalla mulhouse
+            Copyright © 2025 - All right reserved by Jalla Mulhouse
           </p>
         </div>
       </div>
